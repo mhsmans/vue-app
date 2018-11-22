@@ -1,13 +1,19 @@
 <template>
   <div>
     <p class="loading" v-if='loading'>Loading...</p>
-    
+    <div v-if="nodeQuery" >
+      <div v-for="item in nodeQuery.entities" :key="item.title">
+        {{ item.title }}
+        {{ item.body.value }}
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import ItemsApi from "@/services/api/Items";
-import { ITEMS_QUERY } from '@/services/graphql/Graphql'
+// import ItemsApi from "@/services/api/Items";
+import { ITEMS_QUERY } from "@/services/graphql/Graphql";
 
 export default {
   name: "ItemsList",
@@ -17,6 +23,13 @@ export default {
       items: []
     };
   },
+  apollo: {
+    nodeQuery: {
+      query: ITEMS_QUERY,
+      prefetch: true,
+      loadingKey: 'loading'
+    }
+  }
   // created() {
   //   ItemsApi.getItems()
   //     .then(items => {
