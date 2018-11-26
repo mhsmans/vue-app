@@ -4,13 +4,15 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/login">Login</router-link>
     </div>
+    <div class="content">
     <router-view/>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -25,5 +27,11 @@
       color: #42b983;
     }
   }
+}
+
+.content {
+  margin: 0 auto;
+  width: 50%;
+  padding: 30px;
 }
 </style>
