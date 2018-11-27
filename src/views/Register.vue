@@ -1,17 +1,17 @@
 <template>
-  <div class="home">
-    <items-list />
+  <div class="register">
+    <register-form />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import ItemsList from '@/components/ItemsList.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
 
 export default {
-  name: 'home',
+  name: 'Register',
   components: {
-    ItemsList
+    RegisterForm
   }
 }
 </script>
@@ -19,4 +19,3 @@ export default {
 <style lang="scss" scoped>
 
 </style>
-

@@ -46,18 +46,6 @@ export default {
       prefetch: true
     }
   }
-  // created() {
-  //   ItemsApi.getItems()
-  //     .then(items => {
-  //       console.log(items);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //       this.loading = false;
-  //     });
-  // }
 };
 </script>
 

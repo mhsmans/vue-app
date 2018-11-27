@@ -7,6 +7,7 @@ import {
 } from "@/variables.js";
 
 export default {
+  // Get access- and refresh token.
   passwordGrant(username, password) {
     const data = {
       grant_type: CLIENT_GRANT_TYPE,
@@ -28,13 +29,17 @@ export default {
         "Content-Type": "application/x-www-form-urlencoded"
       })
     })
-      .then(res => res.json())
       .then(res => {
-        return res;
+        if (!res.ok) {
+          console.log(res.statusText);
+          return false;
+        }
+        return res.json();
       })
       .catch(err => {
         console.log(err);
       });
+
     return promise;
   }
 };

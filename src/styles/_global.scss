@@ -1,0 +1,50 @@
+/******************Variables********************/
+$color-primary: #54dba7;
+
+$color-off-white: #f3f3f3;
+$color-white: #ffffff;
+$color-gray: #adadad;
+$color-error: #db0c0c;
+$color-link: #396186;
+
+$color-font: #2b2b2b;
+
+
+/******************Mixins********************/
+
+// Screen sizes for breakpoints.
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+
+// Breakpoint mixins.
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+      @content;
+    }
+  }
+  
+  @mixin md {
+    @media (min-width: #{$screen-md-min}) {
+      @content;
+    }
+  }
+  
+  @mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+      @content;
+    }
+  }
+
+// Shadow mixins.
+@mixin nav-shadow {
+    -webkit-box-shadow: 0px 2px 4px -1px $color-gray;
+    -moz-box-shadow: 0px 2px 4px -1px $color-gray;
+    box-shadow: 0px 2px 4px -1px $color-gray;
+}
+
+@mixin shadow {
+    -webkit-box-shadow: 2px 2px 4px -1px $color-gray;
+    -moz-box-shadow: 2px 2px 4px -1px $color-gray;
+    box-shadow: 2px 2px 4px -1px $color-gray;
+}
