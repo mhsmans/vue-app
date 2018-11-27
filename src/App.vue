@@ -1,16 +1,20 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div class="container">
-        <div>
-          <router-link to="home">Home</router-link>
-        </div>
-        <div v-if="user === ''">
-          <a @click.prevent="openModal">Log in</a>
-        </div>
-        <div v-else>
+      <div class="left-group">
+        <router-link to="home">
+          <font-awesome-icon size="1x" icon="home"/>
+          decoupled-vue.com
+        </router-link>
+      </div>
+      <div class="right-group" v-if="user === ''">
+        <a @click.prevent="openModal">Log in</a>
+      </div>
+      <div class="right-group" v-else>
+        <a @click="logOut">Log out</a>
+        <div class="user">
+          <font-awesome-icon size="1x" icon="user"/>
           {{ user }}
-          <a @click="logOut">Log out</a>
         </div>
       </div>
     </div>
@@ -19,7 +23,7 @@
       <div v-if="modalState === true" class="modal-mask">
         <div class="wrap">
           <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
-          <test/>
+          <authentication/>
         </div>
       </div>
     </div>
@@ -52,9 +56,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -66,47 +71,42 @@ body {
 }
 
 #nav {
-  background-color: $color-white;
-
   @include nav-shadow;
-}
 
-#nav > .container {
+  background-color: $color-secondary;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: $color-white;
+  padding: 10px 25px 10px 25px;
 
   a {
-    font-weight: bold;
-    color: $color-primary;
     cursor: pointer;
     text-decoration: none;
+    color: $color-white;
 
     &.router-link-exact-active {
-      color: #42b983;
+      border-bottom: 1px solid white;
     }
+  }
+}
+
+.left-group {
+  display: flex;
+}
+
+.right-group {
+  display: flex;
+  justify-content: right;
+
+  a {
+    margin-right: 50px;
   }
 }
 
 .content {
   margin: 0 auto;
-}
-
-.container {
-  padding: 20px 15px 20px 15px;
-  margin-right: auto;
-  margin-left: auto;
-
-  @include sm {
-    width: 750px;
-  }
-
-  @include md {
-    width: 970px;
-  }
-
-  @include lg {
-    width: 1170px;
-  }
 }
 
 .modal-mask {
@@ -137,6 +137,10 @@ body {
   width: fit-content;
   padding: 20px;
   margin: 0 auto;
+}
+
+.user:hover {
+  cursor: default;
 }
 
 </style>

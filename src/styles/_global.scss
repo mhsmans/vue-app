@@ -1,6 +1,7 @@
 @import 'mixins';
 
-$color-primary: #54dba7;
+$color-primary: #105469;
+$color-secondary: #2d4e58;
 
 $color-off-white: #f3f3f3;
 $color-dark-gray: #1d1d1d;
@@ -10,8 +11,27 @@ $color-error: #e64242;
 $color-link: #396186;
 
 $color-font: #2b2b2b;
+$color-font-light: #5a5a5a;
 
 // Screen sizes for breakpoints.
 $screen-sm-min: 768px;
 $screen-md-min: 992px;
 $screen-lg-min: 1200px;
+
+.container {
+    padding: 20px 15px 20px 15px;
+    margin-right: auto;
+    margin-left: auto;
+  
+    @include sm {
+      width: 750px;
+    }
+  
+    @include md {
+      width: 970px;
+    }
+  
+    @include lg {
+      width: 1170px;
+    }
+  }

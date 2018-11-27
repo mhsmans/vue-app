@@ -12,10 +12,10 @@ import Authentication from '@/views/Authentication.vue';
 
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faUser, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faTimes);
+library.add(faTimes, faUser, faHome);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
@@ -37,7 +37,7 @@ Vue.use(VueApollo);
 
 Vue.config.productionTip = false;
 
-Vue.component('test', Authentication);
+Vue.component('authentication', Authentication);
 
 new Vue({
   router,
