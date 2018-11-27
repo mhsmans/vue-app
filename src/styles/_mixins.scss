@@ -1,0 +1,31 @@
+// Breakpoint mixins.
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+      @content;
+    }
+  }
+  
+  @mixin md {
+    @media (min-width: #{$screen-md-min}) {
+      @content;
+    }
+  }
+  
+  @mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+      @content;
+    }
+  }
+
+// Shadow mixins.
+@mixin nav-shadow {
+    -webkit-box-shadow: 0px 2px 4px -1px $color-gray;
+    -moz-box-shadow: 0px 2px 4px -1px $color-gray;
+    box-shadow: 0px 2px 4px -1px $color-gray;
+}
+
+@mixin shadow {
+    -webkit-box-shadow: 2px 2px 4px -1px $color-gray;
+    -moz-box-shadow: 2px 2px 4px -1px $color-gray;
+    box-shadow: 2px 2px 4px -1px $color-gray;
+}

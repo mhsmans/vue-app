@@ -39,7 +39,7 @@
 import AuthService from '@/services/api/Auth'
 
 export default {
-  name: "LoginForm",
+  name: "AuthForm",
   data() {
     return {
         userData: {
@@ -58,14 +58,14 @@ export default {
                   this.$store.dispatch('storeAccessToken', data.access_token);
                   this.$store.dispatch('storeRefreshToken', data.refresh_token);
                   this.$store.dispatch('storeCurrentUser', this.userData.username);
-                  this.$router.push('home');
+                  this.$store.commit('closeModal');
               } else {
                   this.hasError = true;
               }
           })
       },
       back() {
-          this.$router.go(-1);
+          this.$store.commit('closeModal');
       },
       register() {
           this.$router.push('register');
@@ -113,7 +113,7 @@ input {
     font-size: 1.3em;
     border: 0;
     padding: 10px 20px 10px 20px;
-    background-color: rgba($color: $color-error, $alpha: 0.7);
+    background-color: $color-error;
     color: $color-white;
     cursor: pointer;
 }

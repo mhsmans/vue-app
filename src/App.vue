@@ -6,16 +6,22 @@
           <router-link to="home">Home</router-link>
         </div>
         <div v-if="user === ''">
-          <router-link to="login">Log in</router-link>
+          <a @click.prevent="openModal">Log in</a>
         </div>
         <div v-else>
           {{ user }}
-          <a v-on:click="logOut">Log out</a>
+          <a @click="logOut">Log out</a>
         </div>
       </div>
     </div>
     <div class="content container">
       <router-view/>
+      <div v-if="modalState === true" class="modal-mask">
+        <div class="wrap">
+          <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
+          <test/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -25,11 +31,20 @@ export default {
   computed: {
     user() {
       return this.$store.getters.currentUser;
+    },
+    modalState() {
+      return this.$store.getters.modalState;
     }
   },
   methods: {
     logOut() {
       this.$store.dispatch('userLogOut');
+    },
+    openModal() {
+      this.$store.commit('openModal');
+    },
+    closeModal() {
+      this.$store.commit('closeModal');
     }
   }
 }
@@ -92,6 +107,36 @@ body {
   @include lg {
     width: 1170px;
   }
+}
+
+.modal-mask {
+  position: fixed;
+  padding: 20px;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-dark-gray, 0.7);
+}
+
+.icon {
+  color: $color-white;
+  display: flex;
+  margin: 10px 0 10px auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  :hover {
+    color: $color-error;
+    transform: scale(1.1);
+  }
+}
+
+.wrap {
+  width: fit-content;
+  padding: 20px;
+  margin: 0 auto;
 }
 
 </style>
