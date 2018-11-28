@@ -46,7 +46,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("userLogOut");
-      this.router.push("home");
+      this.$router.push({ name: 'home' });
     },
     openModal() {
       this.$store.commit("openModal");
