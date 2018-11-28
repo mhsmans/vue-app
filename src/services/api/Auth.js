@@ -52,7 +52,7 @@ export default {
       refresh_token: refreshToken,
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
-      scope: CLIENT_SCOPE
+      // scope: CLIENT_SCOPE // !!! this must be disabled HERE to get valid access tokens !!!
     };
 
     const formBody = Object.keys(data)

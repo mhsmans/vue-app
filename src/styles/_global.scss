@@ -2,6 +2,7 @@
 
 $color-primary: #105469;
 $color-secondary: #2d4e58;
+$color-accent: rgb(175, 232, 250);
 
 $color-off-white: #f3f3f3;
 $color-dark-gray: #1d1d1d;
@@ -23,6 +24,7 @@ $screen-lg-min: 1200px;
     padding: 20px 15px 20px 15px;
     margin-right: auto;
     margin-left: auto;
+    background-color: $color-white;
   
     @include sm {
       width: 750px;

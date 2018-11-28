@@ -2,24 +2,25 @@
   <div id="app">
     <div id="nav">
       <div class="left-group">
-        <router-link to="home">
-          <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
+        <router-link :to="{ name: 'home' }">
+          <font-awesome-icon size="1x" icon="home"/> decoupled-vue.com
         </router-link>
       </div>
-      <div class="right-group" v-if="user === ''">
-        <a @click.prevent="openModal">Log in</a>
-      </div>
-      <div class="right-group" v-else>
-        <a @click="logOut">Log out</a>
-        <div class="user">
-          <font-awesome-icon size="1x" icon="user"/>
-          {{ user }}
+      <div class="right-group">
+        <router-link :to="{ name: 'createItem' }">Create item</router-link>
+        <div v-if="user === ''">
+          <a @click.prevent="openModal">Log in</a>
+        </div>
+        <div v-else class="signed-in">
+          <a @click="logOut">Log out</a>
+          <div class="user">
+            <font-awesome-icon size="1x" icon="user"/>
+            {{ user }}
+          </div>
         </div>
       </div>
     </div>
     <div class="content container">
-      <button @click.prevent="refresh">Refresh tokens!</button>
-
       <router-view/>
       <div v-if="modalState" class="modal-mask">
         <div class="wrap">
@@ -32,7 +33,6 @@
 </template>
 
 <script>
-import AuthService from "@/services/api/Auth";
 
 export default {
   computed: {
@@ -54,16 +54,6 @@ export default {
     closeModal() {
       this.$store.commit("closeModal");
     },
-    refresh() {
-      AuthService.refreshToken(this.$store.getters.refreshToken).then(data => {
-        if (data !== false) {
-          this.$store.dispatch("storeAccessToken", data.access_token);
-          this.$store.dispatch("storeRefreshToken", data.refresh_token);
-        } else {
-          alert("error");
-        }
-      });
-    }
   }
 };
 </script>
@@ -81,6 +71,7 @@ export default {
 
 body {
   margin: 0;
+  background-color: $color-off-white;
 }
 
 #nav {
@@ -93,6 +84,7 @@ body {
   font-size: 1.2em;
   color: $color-white;
   padding: 10px 25px 10px 25px;
+  margin-bottom: 20px;
 
   a {
     cursor: pointer;
@@ -100,13 +92,14 @@ body {
     color: $color-white;
 
     &.router-link-exact-active {
-      border-bottom: 1px solid white;
+      color: $color-accent;
     }
   }
 }
 
 .left-group {
   display: flex;
+  padding-left: 50px;
 }
 
 .right-group {
@@ -116,6 +109,10 @@ body {
   a {
     margin-right: 50px;
   }
+}
+
+.signed-in {
+  display: flex;
 }
 
 .content {
@@ -151,7 +148,11 @@ body {
   margin: 0 auto;
 }
 
-.user:hover {
-  cursor: default;
+.user {
+  margin-right: 50px;
+
+  &:hover {
+    cursor: default;
+  }
 }
 </style>

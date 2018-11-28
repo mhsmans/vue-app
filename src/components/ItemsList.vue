@@ -55,7 +55,6 @@ export default {
 .item {
   display: grid;
   grid-template-rows: auto;
-  border: 1px solid black;
   margin-top: 20px;
 }
 
@@ -69,7 +68,6 @@ export default {
 .body {
   overflow: scroll;
   height: 300px;
-  border: 1px solid black;
 }
 
 .image {

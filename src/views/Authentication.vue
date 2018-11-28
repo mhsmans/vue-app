@@ -1,6 +1,6 @@
 <template>
   <div class="authentication">
-    <div v-if="loginModal === true">
+    <div v-if="loginModal">
       <login-form/>
     </div>
     <div v-else>
