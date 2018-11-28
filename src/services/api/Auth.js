@@ -45,44 +45,42 @@ export default {
 
   // Registration for new user.
   register(username, password, email) {
-
     const data = {
-      "name": [
+      name: [
         {
-          "value": username
+          value: username
         }
       ],
-      "pass": [
+      pass: [
         {
-          "value": password
+          value: password
         }
       ],
-      "mail": [
+      mail: [
         {
-          "value": email
+          value: email
         }
       ]
-    }
+    };
 
-    let promise = fetch(BASE_URL + "user/register", {
+    let promise = fetch(BASE_URL + "user/register?_format=json", {
       method: "POST",
       headers: new Headers({
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }),
-      body: data
+      body: JSON.stringify(data)
     })
-    .then(res => {
-      if (!res.ok) {
-        console.log(res.statusText);
-        return false;
-      } else {
-        console.log(res.json());
-        return true;
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .then(res => {
+        if (!res.ok) {
+          console.log(res.statusText);
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     return promise;
   }
 };

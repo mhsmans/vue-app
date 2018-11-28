@@ -20,7 +20,7 @@
     </div>
     <div class="content container">
       <router-view/>
-      <div v-if="modalState === true" class="modal-mask">
+      <div v-if="modalState" class="modal-mask">
         <div class="wrap">
           <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
           <authentication/>
@@ -98,7 +98,7 @@ body {
 
 .right-group {
   display: flex;
-  justify-content: right;
+  justify-content: flex-end;
 
   a {
     margin-right: 50px;

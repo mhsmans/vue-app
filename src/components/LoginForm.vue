@@ -82,7 +82,6 @@ export default {
     padding: 20px;
     width: fit-content;
     margin: auto;
-    @include shadow;
 }
 
 .form-step {
