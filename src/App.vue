@@ -117,7 +117,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba($color-dark-gray, 0.7);
+  background-color: rgba($color-dark-gray, 0.4);
 }
 
 .icon {
@@ -129,7 +129,6 @@ body {
 
   :hover {
     color: $color-error;
-    transform: scale(1.1);
   }
 }
 

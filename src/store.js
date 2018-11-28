@@ -8,7 +8,8 @@ export default new Vuex.Store({
     username: '',
     'access-token': '',
     'refresh-token': '',
-    modalState: false
+    modalState: false,
+    loginModal: true
   },
   getters: {
     accessToken(state) {
@@ -22,15 +23,20 @@ export default new Vuex.Store({
     },
     modalState(state) {
       return state.modalState;
+    },
+    loginModal(state) {
+      return state.loginModal;
     }
   },
   mutations: {
+    /****************TOKENS*********************/
     storeAccessToken(state, accessToken) {
       state["access-token"] = accessToken;
     },
     storeRefreshToken(state, refreshToken) {
       state["refresh-token"] = refreshToken;
     },
+    /****************USERS**********************/
     storeCurrentUser(state, username) {
       state.username = username;
     },
@@ -39,11 +45,18 @@ export default new Vuex.Store({
       state["refresh-token"] = '';
       state.username = '';
     },
+    /****************MODAL**********************/
     openModal(state) {
       state.modalState = true;
     },
     closeModal(state) {
       state.modalState = false;
+    },
+    setRegisterModal(state) {
+      state.loginModal = false;
+    },
+    setLoginModal(state) {
+      state.loginModal = true;
     }
   },
   actions: {

@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrap">
     <form id="login">
-      <div class="error-message" v-show="hasError === true">
+      <div class="error-message" v-show="hasError">
         <p>Invalid username and password combination.</p>
       </div>
       <div class="form-step">
@@ -28,7 +28,7 @@
         <a @click.prevent="register">New here? Sign up!</a>
       </div>
       <div class="form-step-buttons">
-        <button class="back-button" @click.prevent="back">Back</button>
+        <button class="close-button" @click.prevent="close">Close</button>
         <button class="button" @click.prevent="submit">Log in</button>
       </div>
     </form>
@@ -39,7 +39,7 @@
 import AuthService from '@/services/api/Auth'
 
 export default {
-  name: "AuthForm",
+  name: "LoginForm",
   data() {
     return {
         userData: {
@@ -64,18 +64,18 @@ export default {
               }
           })
       },
-      back() {
+      close() {
           this.$store.commit('closeModal');
       },
       register() {
-          this.$router.push('register');
+          this.$store.commit('setRegisterModal');
       }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
 
 .form-wrap {
     background-color: $color-white;
@@ -98,6 +98,7 @@ export default {
 input {
     font-size: 1.3em;
     padding: 10px;
+    min-width: 350px;
 }
 
 .button {
@@ -109,7 +110,7 @@ input {
     cursor: pointer;
 }
 
-.back-button {
+.close-button {
     font-size: 1.3em;
     border: 0;
     padding: 10px 20px 10px 20px;
@@ -135,7 +136,9 @@ input {
 }
 
 .error-message {
+    text-align: left;
     color: $color-error;
+    margin-bottom: 5px;
 }
 
 </style>

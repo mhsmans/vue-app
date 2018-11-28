@@ -1,17 +1,29 @@
 <template>
   <div class="authentication">
-    <auth-form />
+    <div v-if="loginModal === true">
+      <login-form/>
+    </div>
+    <div v-else>
+      <register-form/>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import AuthForm from '@/components/AuthForm.vue'
+import LoginForm from '@/components/LoginForm.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
 
 export default {
   name: 'authentication',
   components: {
-    AuthForm
+    LoginForm,
+    RegisterForm
+  },
+  computed: {
+    loginModal() {
+      return this.$store.getters.loginModal;
+    }
   }
 }
 </script>

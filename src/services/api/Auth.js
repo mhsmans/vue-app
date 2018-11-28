@@ -41,5 +41,48 @@ export default {
       });
 
     return promise;
+  },
+
+  // Registration for new user.
+  register(username, password, email) {
+
+    const data = {
+      "name": [
+        {
+          "value": username
+        }
+      ],
+      "pass": [
+        {
+          "value": password
+        }
+      ],
+      "mail": [
+        {
+          "value": email
+        }
+      ]
+    }
+
+    let promise = fetch(BASE_URL + "user/register", {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: data
+    })
+    .then(res => {
+      if (!res.ok) {
+        console.log(res.statusText);
+        return false;
+      } else {
+        console.log(res.json());
+        return true;
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    return promise;
   }
 };
