@@ -3,8 +3,7 @@
     <div id="nav">
       <div class="left-group">
         <router-link to="home">
-          <font-awesome-icon size="1x" icon="home"/>
-          decoupled-vue.com
+          <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
         </router-link>
       </div>
       <div class="right-group" v-if="user === ''">
@@ -19,6 +18,8 @@
       </div>
     </div>
     <div class="content container">
+      <button @click.prevent="refresh">Refresh tokens!</button>
+
       <router-view/>
       <div v-if="modalState" class="modal-mask">
         <div class="wrap">
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+import AuthService from "@/services/api/Auth";
+
 export default {
   computed: {
     user() {
@@ -42,21 +45,31 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.dispatch('userLogOut');
+      this.$store.dispatch("userLogOut");
+      this.router.push("home");
     },
     openModal() {
-      this.$store.commit('openModal');
+      this.$store.commit("openModal");
     },
     closeModal() {
-      this.$store.commit('closeModal');
+      this.$store.commit("closeModal");
+    },
+    refresh() {
+      AuthService.refreshToken(this.$store.getters.refreshToken).then(data => {
+        if (data !== false) {
+          this.$store.dispatch("storeAccessToken", data.access_token);
+          this.$store.dispatch("storeRefreshToken", data.refresh_token);
+        } else {
+          alert("error");
+        }
+      });
     }
   }
-}
-
+};
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 #app {
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
@@ -141,5 +154,4 @@ body {
 .user:hover {
   cursor: default;
 }
-
 </style>
