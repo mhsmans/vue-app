@@ -79,7 +79,7 @@ export default {
 
 .form-wrap {
     background-color: $color-white;
-    padding: 20px;
+    padding: 25px;
     width: fit-content;
     margin: auto;
 }

@@ -121,7 +121,6 @@ body {
 
 .modal-mask {
   position: fixed;
-  padding: 20px;
   z-index: 9998;
   top: 0;
   left: 0;

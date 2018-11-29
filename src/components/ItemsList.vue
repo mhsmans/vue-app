@@ -1,22 +1,20 @@
 <template>
   <div>
     <div v-if="nodeQuery" >
-      <div v-for="item in nodeQuery.entities" :key="item.title">
+      <div v-for="item in nodeQuery.entities" :key="item.nid">
         <div class="item">
           <div class="title">
             <h3>{{ item.title }}</h3>
           </div>
           <div class="wrap">
-            <div class="body">
+            <div class="body" v-if="item.body">
               <p>{{ item.body.value }}</p>
             </div>
-            <div class="image">
+            <div class="image" v-if="item.img">
               <img :src='item.img.url' alt=''/>
             </div>
           </div>
-        <!-- {{ item.file.entity.filename }}
-        {{ item.file.entity.url }} -->
-        <div class="category">
+        <div class="category" v-if="item.category">
           <div v-for="category in item.category" :key="category.name">
             {{ category.entity.name }}
           </div>
