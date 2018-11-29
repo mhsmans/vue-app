@@ -1,6 +1,7 @@
 import { BASE_URL } from "@/variables.js";
 
 export default {
+  // Create new item
   createItem(itemData, accessToken) {
     const data = {
       title: [
@@ -41,5 +42,5 @@ export default {
         console.log(err);
       });
     return promise;
-  }
+  },
 };

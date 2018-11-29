@@ -25,6 +25,18 @@
             rows="10"
           />
         </div>
+        <div class="form-step">
+          <p class="error-message" v-if="errors.hasImageError">Image is required.</p>
+          <input
+            type="file"
+            ref="file"
+            accept="image/*"
+            id="image"
+            class="form-image"
+            v-bind:class="[errors.hasImageError ? 'error' : 'no-error']"
+            v-on:change="handleFileUpload()"
+          >
+        </div>
         <!-- <div class="form-step">
         <div v-if="taxonomyTermQuery">
           <select id="category-select">
@@ -36,7 +48,7 @@
         </div>
         </div>-->
         <div class="create-button">
-          <button class="button" @click.prevent="createItem">Create</button>
+          <button class="button" @click.prevent="convertImage">Create</button>
         </div>
       </form>
     </div>
@@ -67,11 +79,14 @@ export default {
       itemData: {
         category: null,
         body: null,
-        title: null
+        title: null,
+        image: null,
+        base64Image: null
       },
       errors: {
         hasTitleError: false,
-        hasBodyError: false
+        hasBodyError: false,
+        hasImageError: false
       },
       itemCreated: false
     };
@@ -105,10 +120,29 @@ export default {
         });
       }
     },
+    // Create base64 encoded string to send as image data. 
+    convertImage() {
+      const img = this.itemData.image;
+      const reader = new FileReader();
+      reader.readAsBinaryString(img);
+
+      reader.onload = () => {
+        this.itemData.base64Image = btoa(reader.result)
+      };
+      reader.onerror = err => {
+        console.log(err);
+      };
+    },
+    // Store uploaded file in data. 
+    handleFileUpload() {
+      this.itemData.image = this.$refs.file.files[0];
+    },
+    // Close modal window.
     closeModal() {
       this.itemCreated = false;
       this.$router.push({ name: "home" });
     },
+    // Validate form.
     checkForm() {
       if (!this.itemData.title) {
         this.errors.hasTitleError = true;
@@ -122,9 +156,16 @@ export default {
         this.errors.hasBodyError = false;
       }
 
+      if (!this.itemData.image) {
+        this.errors.hasImageError = true;
+      } else {
+        this.errors.hasImageError = false;
+      }
+
       if (
         this.errors.hasTitleError === false &&
-        this.errors.hasBodyError === false
+        this.errors.hasBodyError === false &&
+        this.errors.hasImageError === false
       ) {
         return true;
       } else {

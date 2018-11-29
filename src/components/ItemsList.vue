@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Display items that are created during this session -->
     <div class="user-created-data" v-if="createdItems.length > 0">
       <div v-for="item in createdItems" :key="item.nid[0].value">
         <div class="item">
@@ -21,7 +22,7 @@
       </div>
     </div>
 
-    <!-- Displaying data fetched from drupal site -->
+    <!-- Displaying items fetched from drupal site -->
     <div class="graphql-data" v-if="nodeQuery">
       <div v-for="item in nodeQuery.entities" :key="item.nid">
         <div class="item">
@@ -49,7 +50,6 @@
 </template>
 
 <script>
-// import ItemsApi from "@/services/api/Items";
 import { ITEMS_QUERY } from "@/services/graphql/Graphql";
 
 export default {
