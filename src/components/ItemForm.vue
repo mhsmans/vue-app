@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-wrap">
+    <div class="item-form-wrap">
       <form id="itemForm">
         <div class="form-step">
           <p class="error-message" v-if="errors.hasTitleError">Title is required.</p>
@@ -12,6 +12,18 @@
             v-bind:class="[errors.hasTitleError ? 'error' : 'no-error']"
             v-model="itemData.title"
           >
+        </div>
+        <div class="form-step">
+          <p class="error-message" v-if="errors.hasBodyError">Body is required.</p>
+          <textarea
+            type="text"
+            id="body"
+            placeholder="Item body"
+            class="form-textarea"
+            v-bind:class="[errors.hasBodyError ? 'error' : 'no-error']"
+            v-model="itemData.body"
+            rows="10"
+          />
         </div>
         <!-- <div class="form-step">
         <div v-if="taxonomyTermQuery">
@@ -54,10 +66,12 @@ export default {
     return {
       itemData: {
         category: null,
+        body: null,
         title: null
       },
       errors: {
-        hasTitleError: false
+        hasTitleError: false,
+        hasBodyError: false
       },
       itemCreated: false
     };
@@ -69,6 +83,7 @@ export default {
         ItemService.createItem(this.itemData, this.accessToken).then(data => {
           if (data !== false) {
             // Created!
+            this.$store.dispatch("storeCreatedItem", data);
             this.itemCreated = true;
             console.log(data);
           } else {
@@ -101,7 +116,16 @@ export default {
         this.errors.hasTitleError = false;
       }
 
-      if (this.errors.hasTitleError === false) {
+      if (!this.itemData.body) {
+        this.errors.hasBodyError = true;
+      } else {
+        this.errors.hasBodyError = false;
+      }
+
+      if (
+        this.errors.hasTitleError === false &&
+        this.errors.hasBodyError === false
+      ) {
         return true;
       } else {
         return false;
@@ -145,5 +169,26 @@ export default {
 .modal-button-wrap {
   display: flex;
   justify-content: flex-end;
+}
+
+input {
+  font-size: 1.3em;
+  padding: 10px;
+  min-width: 350px;
+}
+
+.form-textarea {
+  resize: none;
+  font-size: 1.3em;
+  padding: 10px;
+  width: 600px;
+}
+
+.item-form-wrap {
+  background-color: $color-white;
+  padding: 25px;
+  width: fit-content;
+  margin: auto;
+  text-align: left;
 }
 </style>

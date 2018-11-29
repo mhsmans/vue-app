@@ -1,6 +1,28 @@
 <template>
   <div>
-    <div v-if="nodeQuery" >
+    <div class="user-created-data" v-if="createdItems.length > 0">
+      <div v-for="item in createdItems" :key="item.nid[0].value">
+        <div class="item">
+          <div class="title">
+            <h3>{{ item.title[0].value }}</h3>
+          </div>
+          <div class="wrap">
+            <div class="body" v-if="item.body">
+              <p>{{ item.body[0].value }}</p>
+            </div>
+            <div class="image" v-if="item.img">
+              <img :src="item.img.url" alt>
+            </div>
+          </div>
+          <div class="category" v-if="item.category">
+            <div v-for="category in item.category" :key="category.name">{{ category.entity.name }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Displaying data fetched from drupal site -->
+    <div class="graphql-data" v-if="nodeQuery">
       <div v-for="item in nodeQuery.entities" :key="item.nid">
         <div class="item">
           <div class="title">
@@ -11,21 +33,18 @@
               <p>{{ item.body.value }}</p>
             </div>
             <div class="image" v-if="item.img">
-              <img :src='item.img.url' alt=''/>
+              <img :src="item.img.url" alt>
             </div>
           </div>
-        <div class="category" v-if="item.category">
-          <div v-for="category in item.category" :key="category.name">
-            {{ category.entity.name }}
+          <div class="category" v-if="item.category">
+            <div v-for="category in item.category" :key="category.name">{{ category.entity.name }}</div>
           </div>
-        </div>
         </div>
       </div>
     </div>
     <div v-else>
       <p class="loading">Loading...</p>
     </div>
-
   </div>
 </template>
 
@@ -43,13 +62,17 @@ export default {
       query: ITEMS_QUERY,
       prefetch: true
     }
+  },
+  computed: {
+    createdItems() {
+      return this.$store.getters.createdItems;
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 .item {
   display: grid;
   grid-template-rows: auto;
@@ -80,5 +103,4 @@ export default {
 .category {
   padding: 20px;
 }
-
 </style>
