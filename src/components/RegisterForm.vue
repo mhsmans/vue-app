@@ -92,13 +92,17 @@ export default {
           this.userData.username,
           this.userData.password,
           this.userData.email
-        ).then(res => {
-          if (res === true) {
-            this.validRegistration = true;
-          } else {
-            alert("Something went wrong.");
-          }
-        });
+        )
+          .then(res => {
+            if (res === true) {
+              this.validRegistration = true;
+            } else {
+              alert("Something went wrong.");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     close() {

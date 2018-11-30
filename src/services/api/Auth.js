@@ -6,9 +6,10 @@ import {
   CLIENT_GRANT_PASSWORD,
   CLIENT_GRANT_REFRESH
 } from "@/variables.js";
+import store from "@/store.js";
 
 export default {
-  // Get access- and refresh token.
+  /**********************GET TOKENS AND STORE THEM********************************/
   passwordGrant(username, password) {
     const data = {
       grant_type: CLIENT_GRANT_PASSWORD,
@@ -38,20 +39,26 @@ export default {
           return res.json();
         }
       })
-      .catch(err => {
-        console.log(err);
+      .then(data => {
+        if (data !== false) {
+          store.dispatch("storeAccessToken", data.access_token);
+          store.dispatch("storeRefreshToken", data.refresh_token);
+          store.dispatch("storeCurrentUser", username);
+          return true;
+        } else {
+          return false;
+        }
       });
-
     return promise;
   },
 
-  // Use refresh token to get new token pair.
-  refreshToken(refreshToken) {
+  /*******************Use refresh token to get new token pair.***********************/
+  refreshTokens(refreshToken) {
     const data = {
       grant_type: CLIENT_GRANT_REFRESH,
       refresh_token: refreshToken,
       client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      client_secret: CLIENT_SECRET
       // scope: CLIENT_SCOPE // !!! this must be disabled HERE to get valid access tokens !!!
     };
 
@@ -74,10 +81,15 @@ export default {
           return res.json();
         }
       })
-      .catch(err => {
-        console.log(err);
+      .then(data => {
+        if (data !== false) {
+          store.dispatch("storeAccessToken", data.access_token);
+          store.dispatch("storeRefreshToken", data.refresh_token);
+        } else {
+          console.log("Refreshing tokens failed. Logging out user.");
+          store.dispatch("userLogOut");
+        }
       });
-
     return promise;
   },
 
@@ -107,18 +119,14 @@ export default {
         "Content-Type": "application/json"
       }),
       body: JSON.stringify(data)
-    })
-      .then(res => {
-        if (!res.ok) {
-          console.log(res.statusText);
-          return false;
-        } else {
-          return true;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then(res => {
+      if (!res.ok) {
+        console.log(res.statusText);
+        return false;
+      } else {
+        return true;
+      }
+    });
     return promise;
   }
 };

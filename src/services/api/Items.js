@@ -3,6 +3,7 @@ import { BASE_URL } from "@/variables.js";
 export default {
   // Create new item
   createItem(itemData, accessToken) {
+    console.log("create item");
     const data = {
       title: [
         {
@@ -22,7 +23,7 @@ export default {
       ],
       img: [
         {
-          "target_id": itemData.createdImageId
+          target_id: itemData.createdImageId
         }
       ]
     };
@@ -34,23 +35,20 @@ export default {
         Authorization: "Bearer " + accessToken
       }),
       body: JSON.stringify(data)
-    })
-      .then(res => {
-        if (!res.ok) {
-          console.log(res.statusText);
-          return false;
-        } else {
-          return res.json();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then(res => {
+      if (!res.ok) {
+        console.log(res.statusText);
+        return false;
+      } else {
+        return res.json();
+      }
+    });
     return promise;
   },
 
   // Create image
   createImage(itemData, accessToken) {
+    console.log("Create image.");
     const data = {
       _links: {
         type: {
@@ -86,6 +84,28 @@ export default {
           return res.json();
         }
       })
+      .then(data => {
+        if (data !== false) {
+          const createdImageId = data.fid[0].value;
+          return createdImageId;
+        } else {
+          return false;
+        }
+      });
     return promise;
+  },
+
+  convertImage(img) {
+    return new Promise((resolve, reject) => {
+      console.log("conversion");
+      const reader = new FileReader();
+      reader.readAsDataURL(img);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = err =>
+        reject(() => {
+          console.log(err);
+          return false;
+        });
+    });
   }
 };

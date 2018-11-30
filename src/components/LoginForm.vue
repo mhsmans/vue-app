@@ -55,13 +55,13 @@ export default {
           .then(data => {
               if (data !== false) {
                   this.hasError = false;
-                  this.$store.dispatch('storeAccessToken', data.access_token);
-                  this.$store.dispatch('storeRefreshToken', data.refresh_token);
-                  this.$store.dispatch('storeCurrentUser', this.userData.username);
                   this.$store.commit('closeModal');
               } else {
                   this.hasError = true;
               }
+          })
+          .catch(err => {
+              console.log(err);
           })
       },
       close() {

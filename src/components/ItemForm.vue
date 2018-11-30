@@ -48,7 +48,7 @@
         </div>
         </div>-->
         <div class="create-button">
-          <button class="button" @click.prevent="createItem">Create</button>
+          <button class="button" @click.prevent="test">Create</button>
         </div>
       </form>
     </div>
@@ -90,81 +90,71 @@ export default {
         hasBodyError: false,
         hasImageError: false
       },
-      itemCreated: false
+      itemCreated: false,
+      // Used to refresh tokens only once
+      refreshExecuted: false
     };
   },
   methods: {
-    // Image needs to be created before complete item.
-    createImage() {
-      let promise = new Promise(resolve => {
-        // Convert the image to base64
-        this.convertImage()
+    // TOKEN REFRESH NOT WORKING YET
+    test() {
+      if (this.checkForm()) {
+        // Convert image and store base64 image.
+        ItemService.convertImage(this.itemData.image)
+          .then(data => {
+            if (data !== false) {
+              // Success, store image.
+              this.itemData.base64Image = btoa(data);
+            } else {
+              console.log("File conversion failed.");
+            }
+          })
           .then(() => {
-            //When conversion is completed, create the image and store the created image ID.
-            ItemService.createImage(this.itemData, this.accessToken).then(
+            // Create image and store image ID for referencing.
+            return ItemService.createImage(
+              this.itemData,
+              this.accessToken
+            ).then(data => {
+              if (data !== false) {
+                // Success, store image ID.
+                this.itemData.createdImageId = data;
+              } else {
+                console.log("Image creation failed.");
+                // if (this.refreshExecuted === false) {
+                //   // Could go wrong because of invalid tokens. Try to refresh them once.
+                //   console.log("Trying again with refreshed tokens.");
+                //   AuthService.refreshTokens(this.refreshToken).then(() => {
+                //     this.refreshExecuted = true;
+                //   });
+                // }
+              }
+            });
+          })
+          .then(() => {
+            // Create item.
+            return ItemService.createItem(this.itemData, this.accessToken).then(
               data => {
-                console.log(data);
-                resolve((this.itemData.createdImageId = data.fid[0].value));
+                if (data !== false) {
+                  // Success
+                  this.$store.dispatch("storeCreatedItem", data);
+                  this.itemCreated = true;
+                } else {
+                  console.log("Item creation failed.");
+                  // if (this.refreshExecuted === false) {
+                  //   // Could go wrong because of invalid tokens. Try to refresh them once.
+                  //   console.log("Trying again with refreshed tokens.");
+                  //   AuthService.refreshTokens(this.refreshToken).then(() => {
+                  //     this.refreshExecuted = true;
+                  //   });
+                  // }
+                }
               }
             );
           })
-          // kan zo weg
           .catch(err => {
             console.log(err);
           });
-      });
-      return promise;
-    },
-
-    createItem() {
-      if (this.checkForm()) {
-        this.createImage().then(() => {
-          // Try to create new item
-          ItemService.createItem(this.itemData, this.accessToken).then(data => {
-            if (data !== false) {
-              // Created!
-              this.$store.dispatch("storeCreatedItem", data);
-              this.itemCreated = true;
-              console.log(data);
-            } else {
-              // Access token invalid, refresh the tokens
-              AuthService.refreshToken(this.refreshToken).then(data => {
-                if (data !== false) {
-                  // Store new tokens
-                  console.log("Trying again with refreshed tokens.");
-                  this.$store.dispatch("storeAccessToken", data.access_token);
-                  this.$store.dispatch("storeRefreshToken", data.refresh_token);
-                  this.createItem();
-                } else {
-                  // Token refresh failed, log out user
-                  alert("Something went wrong, ending user session.");
-                  this.$store.dispatch("userLogOut");
-                }
-              });
-            }
-          });
-        })
-        .catch(err => {
-          console.log(err)
-        })
       }
-    },
-    // Create base64 encoded string to send as image data.
-    convertImage() {
-      const img = this.itemData.image;
-      const reader = new FileReader();
-
-      let promise = new Promise((resolve, reject) => {
-        reader.readAsBinaryString(img);
-        reader.onload = () => {
-          // On successful conversion.
-          resolve((this.itemData.base64Image = btoa(reader.result)));
-        };
-        reader.onerror = err => {
-          reject(console.log(err));
-        };
-      });
-      return promise;
     },
     // Store uploaded file in data.
     handleFileUpload() {
