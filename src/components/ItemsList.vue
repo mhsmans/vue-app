@@ -11,8 +11,9 @@
             <div class="body" v-if="item.body">
               <p>{{ item.body[0].value }}</p>
             </div>
+            <!-- This image is invisible before page refresh. This is caused by the image url.. -->
             <div class="image" v-if="item.img">
-              <img :src="item.img.url" alt>
+              <img :src="item.img[0].url" alt>
             </div>
           </div>
           <div class="category" v-if="item.category">

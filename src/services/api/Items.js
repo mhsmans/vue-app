@@ -19,6 +19,11 @@ export default {
           value: itemData.body,
           format: "basic_html"
         }
+      ],
+      img: [
+        {
+          "target_id": itemData.createdImageId
+        }
       ]
     };
 
@@ -43,4 +48,44 @@ export default {
       });
     return promise;
   },
+
+  // Create image
+  createImage(itemData, accessToken) {
+    const data = {
+      _links: {
+        type: {
+          href: BASE_URL + "rest/type/file/image"
+        }
+      },
+      filename: [
+        {
+          value: itemData.imageName
+        }
+      ],
+      data: [
+        {
+          value: itemData.base64Image
+        }
+      ]
+    };
+
+    let promise = fetch(BASE_URL + "entity/file?_format=hal_json", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/hal+json",
+        Accept: "application/hal+json",
+        Authorization: "Bearer " + accessToken
+      }),
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        if (!res.ok) {
+          console.log(res.statusText);
+          return false;
+        } else {
+          return res.json();
+        }
+      })
+    return promise;
+  }
 };

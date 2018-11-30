@@ -48,7 +48,7 @@
         </div>
         </div>-->
         <div class="create-button">
-          <button class="button" @click.prevent="convertImage">Create</button>
+          <button class="button" @click.prevent="createItem">Create</button>
         </div>
       </form>
     </div>
@@ -81,7 +81,9 @@ export default {
         body: null,
         title: null,
         image: null,
-        base64Image: null
+        imageName: null,
+        base64Image: null,
+        createdImageId: null
       },
       errors: {
         hasTitleError: false,
@@ -92,50 +94,82 @@ export default {
     };
   },
   methods: {
+    // Image needs to be created before complete item.
+    createImage() {
+      let promise = new Promise(resolve => {
+        // Convert the image to base64
+        this.convertImage()
+          .then(() => {
+            //When conversion is completed, create the image and store the created image ID.
+            ItemService.createImage(this.itemData, this.accessToken).then(
+              data => {
+                console.log(data);
+                resolve((this.itemData.createdImageId = data.fid[0].value));
+              }
+            );
+          })
+          // kan zo weg
+          .catch(err => {
+            console.log(err);
+          });
+      });
+      return promise;
+    },
+
     createItem() {
       if (this.checkForm()) {
-        // Try to create new item
-        ItemService.createItem(this.itemData, this.accessToken).then(data => {
-          if (data !== false) {
-            // Created!
-            this.$store.dispatch("storeCreatedItem", data);
-            this.itemCreated = true;
-            console.log(data);
-          } else {
-            // Access token invalid, refresh the tokens
-            AuthService.refreshToken(this.refreshToken).then(data => {
-              if (data !== false) {
-                // Store new tokens
-                console.log("Trying again with refreshed tokens.");
-                this.$store.dispatch("storeAccessToken", data.access_token);
-                this.$store.dispatch("storeRefreshToken", data.refresh_token);
-                this.createItem();
-              } else {
-                // Token refresh failed, log out user
-                alert("Something went wrong, ending user session.");
-                this.$store.dispatch("userLogOut");
-              }
-            });
-          }
-        });
+        this.createImage().then(() => {
+          // Try to create new item
+          ItemService.createItem(this.itemData, this.accessToken).then(data => {
+            if (data !== false) {
+              // Created!
+              this.$store.dispatch("storeCreatedItem", data);
+              this.itemCreated = true;
+              console.log(data);
+            } else {
+              // Access token invalid, refresh the tokens
+              AuthService.refreshToken(this.refreshToken).then(data => {
+                if (data !== false) {
+                  // Store new tokens
+                  console.log("Trying again with refreshed tokens.");
+                  this.$store.dispatch("storeAccessToken", data.access_token);
+                  this.$store.dispatch("storeRefreshToken", data.refresh_token);
+                  this.createItem();
+                } else {
+                  // Token refresh failed, log out user
+                  alert("Something went wrong, ending user session.");
+                  this.$store.dispatch("userLogOut");
+                }
+              });
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err)
+        })
       }
     },
-    // Create base64 encoded string to send as image data. 
+    // Create base64 encoded string to send as image data.
     convertImage() {
       const img = this.itemData.image;
       const reader = new FileReader();
-      reader.readAsBinaryString(img);
 
-      reader.onload = () => {
-        this.itemData.base64Image = btoa(reader.result)
-      };
-      reader.onerror = err => {
-        console.log(err);
-      };
+      let promise = new Promise((resolve, reject) => {
+        reader.readAsBinaryString(img);
+        reader.onload = () => {
+          // On successful conversion.
+          resolve((this.itemData.base64Image = btoa(reader.result)));
+        };
+        reader.onerror = err => {
+          reject(console.log(err));
+        };
+      });
+      return promise;
     },
-    // Store uploaded file in data. 
+    // Store uploaded file in data.
     handleFileUpload() {
       this.itemData.image = this.$refs.file.files[0];
+      this.itemData.imageName = this.$refs.file.files[0].name;
     },
     // Close modal window.
     closeModal() {
