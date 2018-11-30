@@ -69,7 +69,6 @@
 
 <script>
 import ItemService from "@/services/api/Items";
-import AuthService from "@/services/api/Auth";
 import { CATEGORIES_QUERY } from "@/services/graphql/Graphql";
 
 export default {

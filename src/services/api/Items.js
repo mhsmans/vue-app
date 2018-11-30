@@ -99,7 +99,7 @@ export default {
     return new Promise((resolve, reject) => {
       console.log("conversion");
       const reader = new FileReader();
-      reader.readAsDataURL(img);
+      reader.readAsBinaryString(img);
       reader.onload = () => resolve(reader.result);
       reader.onerror = err =>
         reject(() => {
