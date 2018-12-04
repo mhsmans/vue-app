@@ -1,25 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <div class="left-group">
-        <router-link :to="{ name: 'home' }">
-          <font-awesome-icon size="1x" icon="home"/> decoupled-vue.com
-        </router-link>
-      </div>
-      <div class="right-group">
-        <router-link :to="{ name: 'createItem' }">Create item</router-link>
-        <div v-if="user === ''">
-          <a @click.prevent="openModal">Log in</a>
+    <header class="header">
+      <div id="nav">
+        <div class="left-group">
+          <router-link :to="{ name: 'home' }">
+            <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
+          </router-link>
         </div>
-        <div v-else class="signed-in">
-          <a @click="logOut">Log out</a>
-          <div class="user">
-            <font-awesome-icon size="1x" icon="user"/>
-            {{ user }}
+        <div class="right-group">
+          <router-link :to="{ name: 'createItem' }">Create item</router-link>
+          <div v-if="user === ''">
+            <a @click.prevent="openModal">Log in</a>
+          </div>
+          <div v-else class="signed-in">
+            <a @click="logOut">Log out</a>
+            <div class="user">
+              <font-awesome-icon size="1x" icon="user"/>
+              {{ user }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </header>
     <div class="content container">
       <router-view/>
       <div v-if="modalState" class="modal-mask">
@@ -33,7 +35,6 @@
 </template>
 
 <script>
-
 export default {
   computed: {
     user() {
@@ -46,14 +47,14 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("userLogOut");
-      this.$router.push({ name: 'home' });
+      this.$router.push({ name: "home" });
     },
     openModal() {
       this.$store.commit("openModal");
     },
     closeModal() {
       this.$store.commit("closeModal");
-    },
+    }
   }
 };
 </script>

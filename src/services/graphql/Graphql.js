@@ -26,6 +26,9 @@ export const ITEMS_QUERY = gql`
               name
             }
           }
+          entityOwner {
+            name
+          }
         }
       }
     }

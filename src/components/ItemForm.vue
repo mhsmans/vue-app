@@ -224,6 +224,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.item-form-wrap {
+  @include shadow;
+
+  > h2 {
+    color: $color-primary;
+  }
+}
+
 .create-button {
   display: flex;
   justify-content: flex-end;
@@ -237,7 +245,11 @@ export default {
 
 hr {
   margin: 5px 0 20px 0;
-  color: $color-primary;
+  color: $color-secondary;
+  background-color: $color-secondary;
+  font-size: 0;
+  border: 0;
+  height: 2px;
 }
 
 .modal-content {
