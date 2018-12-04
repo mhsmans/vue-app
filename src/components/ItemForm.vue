@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="item-form-wrap">
+      <h2>Create a new item.</h2>
       <form id="itemForm">
         <div class="form-step">
           <p class="error-message" v-if="errors.hasTitleError">Title is required.</p>
@@ -37,18 +38,18 @@
             v-on:change="handleFileUpload()"
           >
         </div>
-        <!-- <div class="form-step">
-        <div v-if="taxonomyTermQuery">
-          <select id="category-select">
-            <option
-              v-for="category in taxonomyTermQuery.entities"
-              :key="category.name"
-            >{{ category.name }}</option>
-          </select>
+        <div class="form-step">
+          <div v-if="taxonomyTermQuery">
+            <select id="category-select">
+              <option
+                v-for="category in taxonomyTermQuery.entities"
+                :key="category.name"
+              >{{ category.name }}</option>
+            </select>
+          </div>
         </div>
-        </div>-->
         <div class="create-button">
-          <button class="button" @click.prevent="test">Create</button>
+          <button class="button" @click.prevent="create">Create</button>
         </div>
       </form>
     </div>
@@ -69,6 +70,7 @@
 
 <script>
 import ItemService from "@/services/api/Items";
+import AuthService from "@/services/api/Auth";
 import { CATEGORIES_QUERY } from "@/services/graphql/Graphql";
 
 export default {
@@ -95,8 +97,7 @@ export default {
     };
   },
   methods: {
-    // TOKEN REFRESH NOT WORKING YET
-    test() {
+    create() {
       if (this.checkForm()) {
         // Convert image and store base64 image.
         ItemService.convertImage(this.itemData.image)
@@ -118,14 +119,8 @@ export default {
                 // Success, store image ID.
                 this.itemData.createdImageId = data;
               } else {
-                console.log("Image creation failed.");
-                // if (this.refreshExecuted === false) {
-                //   // Could go wrong because of invalid tokens. Try to refresh them once.
-                //   console.log("Trying again with refreshed tokens.");
-                //   AuthService.refreshTokens(this.refreshToken).then(() => {
-                //     this.refreshExecuted = true;
-                //   });
-                // }
+                // Trhow error when failing.
+                throw new Error("Image creation failed.");
               }
             });
           })
@@ -138,20 +133,23 @@ export default {
                   this.$store.dispatch("storeCreatedItem", data);
                   this.itemCreated = true;
                 } else {
-                  console.log("Item creation failed.");
-                  // if (this.refreshExecuted === false) {
-                  //   // Could go wrong because of invalid tokens. Try to refresh them once.
-                  //   console.log("Trying again with refreshed tokens.");
-                  //   AuthService.refreshTokens(this.refreshToken).then(() => {
-                  //     this.refreshExecuted = true;
-                  //   });
-                  // }
+                  // Throw error when failing.
+                  throw new Error("Item creation failed.");
                 }
               }
             );
           })
           .catch(err => {
-            console.log(err);
+            if (this.refreshExecuted === false) {
+              // Could go wrong because of invalid tokens. Try to refresh them once.
+              console.log("Trying again with refreshed tokens.");
+              AuthService.refreshTokens(this.refreshToken).then(() => {
+                this.refreshExecuted = true;
+                this.create();
+              });
+            } else {
+              console.log(err);
+            }
           });
       }
     },
@@ -239,6 +237,10 @@ input {
   font-size: 1.3em;
   padding: 10px;
   min-width: 350px;
+
+  button {
+    font-size: 1.1em;
+  }
 }
 
 .form-textarea {
@@ -248,11 +250,19 @@ input {
   width: 600px;
 }
 
+// .form-image {
+
+// }
+
 .item-form-wrap {
   background-color: $color-white;
   padding: 25px;
   width: fit-content;
   margin: auto;
   text-align: left;
+
+  h2 {
+    text-align: center;
+  }
 }
 </style>

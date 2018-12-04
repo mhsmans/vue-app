@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Display items that are created during this session -->
-    <div class="user-created-data" v-if="createdItems.length > 0">
+    <!-- <div class="user-created-data" v-if="createdItems.length > 0">
       <div v-for="item in createdItems" :key="item.nid[0].value">
         <div class="item">
           <div class="title">
@@ -10,9 +10,9 @@
           <div class="wrap">
             <div class="body" v-if="item.body">
               <p>{{ item.body[0].value }}</p>
-            </div>
-            <!-- This image is invisible before page refresh. This is caused by the image url.. -->
-            <div class="image" v-if="item.img">
+    </div>-->
+    <!-- This image is invisible before page refresh. This is caused by the image url.. -->
+    <!-- <div class="image" v-if="item.img">
               <img :src="item.img[0].url" alt>
             </div>
           </div>
@@ -21,8 +21,7 @@
           </div>
         </div>
       </div>
-    </div>
-
+    </div>-->
     <!-- Displaying items fetched from drupal site -->
     <div class="graphql-data" v-if="nodeQuery">
       <div v-for="item in nodeQuery.entities" :key="item.nid">
@@ -65,6 +64,7 @@ export default {
     }
   },
   computed: {
+    // Used to get created items during this user session. These items can be added above fetched item list.
     createdItems() {
       return this.$store.getters.createdItems;
     }
@@ -78,6 +78,7 @@ export default {
   display: grid;
   grid-template-rows: auto;
   margin-top: 20px;
+  border: 1px solid $color-primary;
 }
 
 .wrap {
@@ -85,11 +86,17 @@ export default {
   grid-template-columns: 2fr 1fr;
   column-gap: 20px;
   padding: 20px;
+  text-align: left;
 }
 
 .body {
-  overflow: scroll;
+  overflow: hidden;
   height: 300px;
+
+  > p {
+    margin-top: 0;
+    font-size: 1.2em;
+  }
 }
 
 .image {
