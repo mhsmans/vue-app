@@ -27,18 +27,21 @@
       <div v-for="item in nodeQuery.entities" :key="item.nid">
         <div class="item">
           <div class="title">
-            <h3>{{ item.title }}</h3>
+            <h2>{{ item.title }}</h2>
           </div>
           <div class="wrap">
-            <div class="body" v-if="item.body">
-              <p>{{ item.body.value }}</p>
-            </div>
             <div class="image" v-if="item.img">
               <img :src="item.img.url" alt>
             </div>
-          </div>
-          <div class="category" v-if="item.category">
-            <div v-for="category in item.category" :key="category.name">{{ category.entity.name }}</div>
+            <div class="body" v-if="item.body">
+              <p>{{ item.body.value }}</p>
+              <div id="bottom-fade"></div>
+            </div>
+            <div class="category" v-if="item.category">
+              <div v-for="category in item.category" :key="category.name" class="category-item">
+                <p>{{ category.name }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -74,16 +77,28 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.graphql-data {
+  display: grid;
+  grid-template-rows: auto;
+  row-gap: 20px;
+}
+
 .item {
   display: grid;
   grid-template-rows: auto;
-  margin-top: 20px;
-  border: 1px solid $color-primary;
+  border: 2px solid $color-primary;
+  background-color: $color-white;
+  padding: 20px;
+
+  p {
+    font-size: 1.2em;
+  }
 }
 
 .wrap {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto;
   column-gap: 20px;
   padding: 20px;
   text-align: left;
@@ -92,23 +107,45 @@ export default {
 .body {
   overflow: hidden;
   height: 300px;
+  position: relative;
 
   > p {
     margin-top: 0;
-    font-size: 1.2em;
   }
 }
 
+.body:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(transparent 150px, white);
+}
+
 .image {
-  img {
+  > img {
     object-fit: cover;
-    max-height: 300px;
-    min-width: 100%;
+    height: 300px;
+    width: 100%;
     vertical-align: bottom;
   }
 }
 
 .category {
-  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
 }
+
+.category-item {
+  > p {
+    margin: 5px;
+    color: $color-primary;
+    font-style: italic;
+    font-size: 1.2em;
+    font-weight: 700;
+  }
+}
+
 </style>

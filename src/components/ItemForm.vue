@@ -4,6 +4,8 @@
       <h2>Create a new item.</h2>
       <form id="itemForm">
         <div class="form-step">
+          <label for="title" class="label">Item title:</label>
+          <hr>
           <p class="error-message" v-if="errors.hasTitleError">Title is required.</p>
           <input
             type="text"
@@ -15,6 +17,8 @@
           >
         </div>
         <div class="form-step">
+          <label for="body" class="label">Item body:</label>
+          <hr>
           <p class="error-message" v-if="errors.hasBodyError">Body is required.</p>
           <textarea
             type="text"
@@ -27,12 +31,15 @@
           />
         </div>
         <div class="form-step">
+          <label for="file-upload" class="label">Image:</label>
+          <hr>
           <p class="error-message" v-if="errors.hasImageError">Image is required.</p>
+          <label for="file-upload" class="custom-file-upload">Upload image...</label>
           <input
             type="file"
             ref="file"
             accept="image/*"
-            id="image"
+            id="file-upload"
             class="form-image"
             v-bind:class="[errors.hasImageError ? 'error' : 'no-error']"
             v-on:change="handleFileUpload()"
@@ -40,10 +47,14 @@
         </div>
         <div class="form-step">
           <div v-if="taxonomyTermQuery">
-            <select id="category-select">
+            <label for="category" class="label">Item category:</label>
+            <hr>
+            <select id="category" class="category-select" v-model="itemData.category">
+              <option disabled value>Select category</option>
               <option
                 v-for="category in taxonomyTermQuery.entities"
-                :key="category.name"
+                v-bind:value="category.tid"
+                :key="category.tid"
               >{{ category.name }}</option>
             </select>
           </div>
@@ -78,7 +89,7 @@ export default {
   data() {
     return {
       itemData: {
-        category: null,
+        category: "",
         body: null,
         title: null,
         image: null,
@@ -218,6 +229,17 @@ export default {
   justify-content: flex-end;
 }
 
+.label {
+  color: $color-primary;
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+hr {
+  margin: 5px 0 20px 0;
+  color: $color-primary;
+}
+
 .modal-content {
   background-color: $color-white;
   padding: 25px;
@@ -237,10 +259,25 @@ input {
   font-size: 1.3em;
   padding: 10px;
   min-width: 350px;
+}
 
-  button {
-    font-size: 1.1em;
-  }
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  padding: 5px;
+  background-color: $color-white;
+  border: 2px solid $color-primary;
+  color: $color-primary;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.form-image {
+  font-size: 1em;
+  padding: 5px;
 }
 
 .form-textarea {
@@ -250,9 +287,25 @@ input {
   width: 600px;
 }
 
-// .form-image {
+.category-select {
+  border: 2px solid $color-primary;
+  background-color: $color-white;
+  font-size: 1.1em;
+  color: $color-primary;
+  padding: 5px;
+}
 
-// }
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+  display: none;
+}
 
 .item-form-wrap {
   background-color: $color-white;
@@ -261,8 +314,9 @@ input {
   margin: auto;
   text-align: left;
 
-  h2 {
+  > h2 {
     text-align: center;
+    margin: 0 0 40px 0;
   }
 }
 </style>

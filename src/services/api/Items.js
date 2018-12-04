@@ -25,6 +25,11 @@ export default {
         {
           target_id: itemData.createdImageId
         }
+      ],
+      category: [
+        {
+          target_id: itemData.category
+        }
       ]
     };
 

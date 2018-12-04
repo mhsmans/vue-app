@@ -85,7 +85,7 @@ export default {
 }
 
 .form-step {
-    margin: 20px 0 20px 0;
+    margin: 20px 0 40px 0;
 }
 
 .form-step-buttons {

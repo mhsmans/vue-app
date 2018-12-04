@@ -24,7 +24,7 @@ $screen-lg-min: 1200px;
     padding: 20px 15px 20px 15px;
     margin-right: auto;
     margin-left: auto;
-    background-color: $color-white;
+    background-color: none;
   
     @include sm {
       width: 750px;

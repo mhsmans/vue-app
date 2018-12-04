@@ -36,6 +36,9 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
+  background-color: $color-white;
+  padding: 20px;
+
   p {
     font-size: 1.3em;
   }
