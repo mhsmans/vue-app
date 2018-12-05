@@ -131,7 +131,7 @@ input {
 }
 
 .no-error {
-    border: 2px solid $color-primary;
+    border: 2px solid $color-font-light;
 }
 
 .error-message {

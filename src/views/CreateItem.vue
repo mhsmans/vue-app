@@ -38,6 +38,7 @@ export default {
 .wrap {
   background-color: $color-white;
   padding: 20px;
+  @include shadow;
 
   p {
     font-size: 1.3em;

@@ -49,7 +49,13 @@
           <div v-if="taxonomyTermQuery">
             <label for="category" class="label">Item category:</label>
             <hr>
-            <select id="category" class="category-select" v-model="itemData.category">
+            <p class="error-message" v-if="errors.hasCategoryError">Category is required.</p>
+            <select
+              id="category"
+              class="category-select"
+              v-model="itemData.category"
+              v-bind:class="[errors.hasCategoryError ? 'error' : 'no-error']"
+            >
               <option disabled value>Select category</option>
               <option
                 v-for="category in taxonomyTermQuery.entities"
@@ -100,10 +106,11 @@ export default {
       errors: {
         hasTitleError: false,
         hasBodyError: false,
-        hasImageError: false
+        hasImageError: false,
+        hasCategoryError: false
       },
       itemCreated: false,
-      // Used to refresh tokens only once
+      // Used to refresh tokens
       refreshExecuted: false
     };
   },
@@ -117,7 +124,9 @@ export default {
               // Success, store image.
               this.itemData.base64Image = btoa(data);
             } else {
-              console.log("File conversion failed.");
+              // Let user know if image conversion has failed.
+              alert("Image conversion failed.");
+              throw new Error("File conversion failed.");
             }
           })
           .then(() => {
@@ -156,6 +165,7 @@ export default {
               console.log("Trying again with refreshed tokens.");
               AuthService.refreshTokens(this.refreshToken).then(() => {
                 this.refreshExecuted = true;
+                // Retry method.
                 this.create();
               });
             } else {
@@ -168,6 +178,7 @@ export default {
     handleFileUpload() {
       this.itemData.image = this.$refs.file.files[0];
       this.itemData.imageName = this.$refs.file.files[0].name;
+      this.imageCheck();
     },
     // Close modal window.
     closeModal() {
@@ -194,10 +205,17 @@ export default {
         this.errors.hasImageError = false;
       }
 
+      if (this.itemData.category === "") {
+        this.errors.hasCategoryError = true;
+      } else {
+        this.errors.hasCategoryError = false;
+      }
+
       if (
         this.errors.hasTitleError === false &&
         this.errors.hasBodyError === false &&
-        this.errors.hasImageError === false
+        this.errors.hasImageError === false &&
+        this.errors.hasCategoryError === false
       ) {
         return true;
       } else {
@@ -245,8 +263,8 @@ export default {
 
 hr {
   margin: 5px 0 20px 0;
-  color: $color-secondary;
-  background-color: $color-secondary;
+  color: $color-font;
+  background-color: $color-font;
   font-size: 0;
   border: 0;
   height: 2px;
@@ -280,8 +298,8 @@ input[type="file"] {
 .custom-file-upload {
   padding: 5px;
   background-color: $color-white;
-  border: 2px solid $color-primary;
-  color: $color-primary;
+  border: 2px solid $color-font-light;
+  color: $color-font-light;
   display: inline-block;
   cursor: pointer;
   font-size: 1.2em;
@@ -294,16 +312,16 @@ input[type="file"] {
 
 .form-textarea {
   resize: none;
-  font-size: 1.3em;
+  font-size: 1.4em;
   padding: 10px;
   width: 600px;
 }
 
 .category-select {
-  border: 2px solid $color-primary;
+  border: 2px solid $color-font-light;
   background-color: $color-white;
   font-size: 1.1em;
-  color: $color-primary;
+  color: $color-font-light;
   padding: 5px;
 }
 

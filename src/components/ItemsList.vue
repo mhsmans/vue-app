@@ -42,7 +42,10 @@
               </div>
             </div>
             <div class="owner">
-              <p>Owner - {{ item.entityOwner.name }}</p>
+              <p>
+                <span style="font-style: normal">Owner -</span>
+                {{ item.entityOwner.name }}
+              </p>
             </div>
           </div>
         </div>
