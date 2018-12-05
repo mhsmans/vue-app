@@ -75,6 +75,11 @@ body {
   background-color: $color-off-white;
 }
 
+// Remove dots when link is clicked.
+a {
+  outline: 0;
+}
+
 #nav {
   @include nav-shadow;
 

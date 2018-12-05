@@ -35,7 +35,7 @@
           <hr>
           <p class="error-message" v-if="errors.hasImageError">Image is required.</p>
           <div class="upload-wrap">
-            <label for="file-upload" class="custom-file-upload">Upload image...</label>
+            <label for="file-upload" class="custom-file-upload">Upload image</label>
             <input
               type="file"
               ref="file"
@@ -58,7 +58,7 @@
           <hr>
           <p class="error-message" v-if="errors.hasPdfError">PDF is required.</p>
           <div class="upload-wrap">
-            <label for="pdf-upload" class="custom-file-upload">Upload PDF...</label>
+            <label for="pdf-upload" class="custom-file-upload">Upload PDF</label>
             <input
               type="file"
               ref="pdf"
@@ -403,7 +403,7 @@ input[type="file"] {
   font-weight: 700;
 }
 
-.form-image {
+.form-image{
   font-size: 1em;
   padding: 5px;
 }
@@ -419,6 +419,7 @@ input[type="file"] {
   border: 2px solid $color-font-light;
   background-color: $color-white;
   font-size: 1.1em;
+  font-weight: 500;
   color: $color-font-light;
   padding: 5px;
 }

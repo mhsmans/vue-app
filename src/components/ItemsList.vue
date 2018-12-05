@@ -34,7 +34,7 @@
               <img :src="item.img.url" alt>
             </div>
             <div class="body" v-if="item.body">
-              <p>{{ item.body.value }}</p>
+              <p style="white-space: pre-line">{{ item.body.value }}</p>
               <button @click="revealBody(item)" class="reveal-button">Read more</button>
             </div>
             <div class="category" v-if="item.category">
@@ -75,7 +75,9 @@
             <h2>{{ selectedItem.title }}</h2>
           </div>
           <div class="detail-body-wrap">
-            <div class="detail-body">{{ selectedItem.body.value }}</div>
+            <div class="detail-body">
+              <p style="white-space: pre-line">{{ selectedItem.body.value }}</p>
+            </div>
           </div>
           <div class="detail-button">
             <Button class="close-button" @click="close">Close</Button>
@@ -112,6 +114,7 @@ export default {
       // Check if data from Drupal back-end is present.
       if (this.nodeQuery) {
         this.nodeQuery.entities.forEach(element => {
+          // element.body.value = element.body.value.replace(/(?:\r\n|\r|\n)/g, <br/>);
           itemArray.push(element);
         });
       }
