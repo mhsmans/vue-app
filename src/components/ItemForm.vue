@@ -34,35 +34,75 @@
           <label for="file-upload" class="label">Image:</label>
           <hr>
           <p class="error-message" v-if="errors.hasImageError">Image is required.</p>
-          <label for="file-upload" class="custom-file-upload">Upload image...</label>
-          <input
-            type="file"
-            ref="file"
-            accept="image/*"
-            id="file-upload"
-            class="form-image"
-            v-bind:class="[errors.hasImageError ? 'error' : 'no-error']"
-            v-on:change="handleFileUpload()"
-          >
+          <div class="upload-wrap">
+            <label for="file-upload" class="custom-file-upload">Upload image...</label>
+            <input
+              type="file"
+              ref="file"
+              accept="image/*"
+              id="file-upload"
+              class="form-image"
+              v-bind:class="[errors.hasImageError ? 'error' : 'no-error']"
+              v-on:change="handleImageUpload()"
+            >
+            <font-awesome-icon
+              v-if="itemData.image !== null"
+              size="2x"
+              @click="closeModal"
+              class="check-icon"
+              icon="check"
+            />
+          </div>
+        </div>
+        <div class="form-step">
+          <label for="pdf-upload" class="label">PDF:</label>
+          <hr>
+          <p class="error-message" v-if="errors.hasPdfError">PDF is required.</p>
+          <div class="upload-wrap">
+            <label for="pdf-upload" class="custom-file-upload">Upload PDF...</label>
+            <input
+              type="file"
+              ref="pdf"
+              accept="application/pdf"
+              id="pdf-upload"
+              class="form-pdf"
+              v-bind:class="[errors.hasPdfError ? 'error' : 'no-error']"
+              v-on:change="handlePdfUpload()"
+            >
+            <font-awesome-icon
+              v-if="itemData.pdf !== null"
+              size="2x"
+              class="check-icon"
+              icon="check"
+            />
+          </div>
         </div>
         <div class="form-step">
           <div v-if="taxonomyTermQuery">
             <label for="category" class="label">Item category:</label>
             <hr>
             <p class="error-message" v-if="errors.hasCategoryError">Category is required.</p>
-            <select
-              id="category"
-              class="category-select"
-              v-model="itemData.category"
-              v-bind:class="[errors.hasCategoryError ? 'error' : 'no-error']"
-            >
-              <option disabled value>Select category</option>
-              <option
-                v-for="category in taxonomyTermQuery.entities"
-                v-bind:value="category.tid"
-                :key="category.tid"
-              >{{ category.name }}</option>
-            </select>
+            <div class="upload-wrap">
+              <select
+                id="category"
+                class="category-select"
+                v-model="itemData.category"
+                v-bind:class="[errors.hasCategoryError ? 'error' : 'no-error']"
+              >
+                <option disabled value>Select category</option>
+                <option
+                  v-for="category in taxonomyTermQuery.entities"
+                  v-bind:value="category.tid"
+                  :key="category.tid"
+                >{{ category.name }}</option>
+              </select>
+              <font-awesome-icon
+                v-if="itemData.category !== ''"
+                size="2x"
+                class="check-icon"
+                icon="check"
+              />
+            </div>
           </div>
         </div>
         <div class="create-button">
@@ -73,7 +113,7 @@
 
     <div v-if="itemCreated" class="modal-mask">
       <div class="wrap">
-        <font-awesome-icon size="3x" @click.prevent="closeModal" class="icon" icon="times"/>
+        <font-awesome-icon size="3x" class="icon" icon="times"/>
         <div class="modal-content">
           <h2>Item created!</h2>
           <div class="modal-button-wrap">
@@ -101,12 +141,17 @@ export default {
         image: null,
         imageName: null,
         base64Image: null,
-        createdImageId: null
+        createdImageId: null,
+        pdf: null,
+        pdfName: null,
+        base64Pdf: null,
+        createdPdfId: null
       },
       errors: {
         hasTitleError: false,
         hasBodyError: false,
         hasImageError: false,
+        hasPdfError: false,
         hasCategoryError: false
       },
       itemCreated: false,
@@ -118,7 +163,7 @@ export default {
     create() {
       if (this.checkForm()) {
         // Convert image and store base64 image.
-        ItemService.convertImage(this.itemData.image)
+        ItemService.convert(this.itemData.image)
           .then(data => {
             if (data !== false) {
               // Success, store image.
@@ -126,8 +171,18 @@ export default {
             } else {
               // Let user know if image conversion has failed.
               alert("Image conversion failed.");
-              throw new Error("File conversion failed.");
+              throw new Error("Image conversion failed.");
             }
+          })
+          .then(() => {
+            ItemService.convert(this.itemData.pdf).then(data => {
+              if (data !== false) {
+                this.itemData.base64Pdf = btoa(data);
+              } else {
+                alert("Pdf conversion failed");
+                throw new Error("Pdf conversion failed.");
+              }
+            });
           })
           .then(() => {
             // Create image and store image ID for referencing.
@@ -143,6 +198,20 @@ export default {
                 throw new Error("Image creation failed.");
               }
             });
+          })
+          .then(() => {
+            // Create pdf and store pdf ID for referencing.
+            return ItemService.createPdf(this.itemData, this.accessToken).then(
+              data => {
+                if (data !== false) {
+                  // Success, store pdf ID.
+                  this.itemData.createdPdfId = data;
+                } else {
+                  // Trhow error when failing.
+                  throw new Error("Pdf creation failed.");
+                }
+              }
+            );
           })
           .then(() => {
             // Create item.
@@ -175,11 +244,17 @@ export default {
       }
     },
     // Store uploaded file in data.
-    handleFileUpload() {
+    handleImageUpload() {
       this.itemData.image = this.$refs.file.files[0];
       this.itemData.imageName = this.$refs.file.files[0].name;
-      this.imageCheck();
     },
+
+    // Store uploaded file in data.
+    handlePdfUpload() {
+      this.itemData.pdf = this.$refs.pdf.files[0];
+      this.itemData.pdfName = this.$refs.pdf.files[0].name;
+    },
+
     // Close modal window.
     closeModal() {
       this.itemCreated = false;
@@ -205,6 +280,12 @@ export default {
         this.errors.hasImageError = false;
       }
 
+      if (!this.itemData.pdf) {
+        this.errors.hasPdfError = true;
+      } else {
+        this.errors.hasPdfError = false;
+      }
+
       if (this.itemData.category === "") {
         this.errors.hasCategoryError = true;
       } else {
@@ -215,6 +296,7 @@ export default {
         this.errors.hasTitleError === false &&
         this.errors.hasBodyError === false &&
         this.errors.hasImageError === false &&
+        this.errors.hasPdfError === false &&
         this.errors.hasCategoryError === false
       ) {
         return true;
@@ -261,6 +343,16 @@ export default {
   font-weight: 700;
 }
 
+.upload-wrap {
+  display: inline-flex;
+  height: fit-content;
+}
+
+.check-icon {
+  color: $color-success;
+  margin-left: 10px;
+}
+
 hr {
   margin: 5px 0 20px 0;
   color: $color-font;
@@ -302,7 +394,8 @@ input[type="file"] {
   color: $color-font-light;
   display: inline-block;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  font-weight: 700;
 }
 
 .form-image {

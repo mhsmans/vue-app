@@ -26,6 +26,11 @@ export default {
           target_id: itemData.createdImageId
         }
       ],
+      file: [
+        {
+          target_id: itemData.createdPdfId
+        }
+      ],
       category: [
         {
           target_id: itemData.category
@@ -57,6 +62,7 @@ export default {
     const data = {
       _links: {
         type: {
+          // This exact url references image file types.
           href: BASE_URL + "rest/type/file/image"
         }
       },
@@ -100,11 +106,62 @@ export default {
     return promise;
   },
 
-  convertImage(img) {
+  // Create pdf
+  createPdf(itemData, accessToken) {
+    console.log("Create pdf.");
+    const data = {
+      _links: {
+        type: {
+          // This exact url references document types like pdf.
+          href: BASE_URL + "rest/type/file/document"
+        }
+      },
+      filename: [
+        {
+          value: itemData.pdfName
+        }
+      ],
+      data: [
+        {
+          value: itemData.base64Pdf
+        }
+      ]
+    };
+
+    let promise = fetch(BASE_URL + "entity/file?_format=hal_json", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/hal+json",
+        Accept: "application/hal+json",
+        Authorization: "Bearer " + accessToken
+      }),
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        if (!res.ok) {
+          console.log(res.statusText);
+          return false;
+        } else {
+          return res.json();
+        }
+      })
+      .then(data => {
+        if (data !== false) {
+          const createdPdfId = data.fid[0].value;
+          return createdPdfId;
+        } else {
+          return false;
+        }
+      });
+    return promise;
+  },
+
+  // Convert files
+  convert(file) {
     return new Promise((resolve, reject) => {
       console.log("conversion");
       const reader = new FileReader();
-      reader.readAsBinaryString(img);
+      reader.readAsBinaryString(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = err =>
         reject(() => {

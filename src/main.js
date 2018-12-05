@@ -12,10 +12,10 @@ import Authentication from '@/views/Authentication.vue';
 
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faUser, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faUser, faHome, faCheck, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faTimes, faUser, faHome);
+library.add(faTimes, faUser, faHome, faCheck, faFilePdf);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

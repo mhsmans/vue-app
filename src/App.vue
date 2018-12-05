@@ -4,7 +4,7 @@
       <div id="nav">
         <div class="left-group">
           <router-link :to="{ name: 'home' }">
-            <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
+            <font-awesome-icon size="1x" icon="home"/> decoupled-vue.com
           </router-link>
         </div>
         <div class="right-group">

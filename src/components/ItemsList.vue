@@ -37,15 +37,21 @@
               <p>{{ item.body.value }}</p>
             </div>
             <div class="category" v-if="item.category">
-              <div v-for="category in item.category" :key="category.name" class="category-item">
-                <p>{{ category.name }}</p>
-              </div>
+              <p>
+                <span style="font-style: normal">Category -</span>
+                {{ item.category.entity.name }}
+              </p>
             </div>
             <div class="owner">
               <p>
                 <span style="font-style: normal">Owner -</span>
                 {{ item.entityOwner.name }}
               </p>
+            </div>
+            <div class="pdf" v-if="item.file">
+              <a :href="item.file.entity.url">
+                <font-awesome-icon size="3x" class="pdf-icon" icon="file-pdf"/>
+              </a>
             </div>
           </div>
         </div>
@@ -91,6 +97,27 @@ export default {
   display: grid;
   grid-template-rows: auto;
   row-gap: 20px;
+}
+
+.pdf {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  text-align: right;
+  position: relative;
+}
+
+.pdf-icon {
+  color: $color-error;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: all 0.1s ease;
+
+  &.pdf-icon:hover {
+    transform: scale(1.1)
+  }
 }
 
 .item {
@@ -156,6 +183,7 @@ export default {
   font-style: italic;
   font-size: 1em;
   font-weight: 700;
+  margin-top: 10px;
 
   > p {
     margin: 0;
@@ -163,7 +191,7 @@ export default {
 }
 
 .category {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: left;
   grid-column-start: 1;
   grid-column-end: 2;
@@ -171,9 +199,10 @@ export default {
   grid-row-end: 3;
 }
 
-.category-item {
+.category {
   > p {
     color: $color-primary;
+    margin: 0;
     font-style: italic;
     font-size: 1.2em;
     font-weight: 700;
