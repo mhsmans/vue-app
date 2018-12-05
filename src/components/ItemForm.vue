@@ -48,7 +48,6 @@
             <font-awesome-icon
               v-if="itemData.image !== null"
               size="2x"
-              @click="closeModal"
               class="check-icon"
               icon="check"
             />
@@ -113,9 +112,10 @@
 
     <div v-if="itemCreated" class="modal-mask">
       <div class="wrap">
-        <font-awesome-icon size="3x" class="icon" icon="times"/>
+        <font-awesome-icon size="3x" @click.prevent="closeModal" class="icon" icon="times"/>
         <div class="modal-content">
           <h2>Item created!</h2>
+          <p>The item will be added to the items list.</p>
           <div class="modal-button-wrap">
             <button class="close-button" @click.prevent="closeModal">Close</button>
           </div>
@@ -367,14 +367,19 @@ hr {
   padding: 25px;
   min-width: 350px;
 
-  h2 {
-    margin: 20px 0 40px 0;
+  > h2 {
+    margin: 20px 0 20px 0;
+    color: $color-success;
   }
 }
 
 .modal-button-wrap {
   display: flex;
   justify-content: flex-end;
+
+  > button {
+    margin-top: 20px;
+  }
 }
 
 input {

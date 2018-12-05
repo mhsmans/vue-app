@@ -26,15 +26,5 @@ $screen-lg-min: 1200px;
     margin-left: auto;
     background-color: none;
   
-    @include sm {
-      width: 750px;
-    }
-  
-    @include md {
-      width: 970px;
-    }
-  
-    @include lg {
-      width: 1170px;
-    }
+    max-width: 800px;
   }

@@ -23,8 +23,8 @@
       </div>
     </div>-->
     <!-- Displaying items fetched from drupal site -->
-    <div class="graphql-data" v-if="nodeQuery">
-      <div v-for="item in nodeQuery.entities" :key="item.nid">
+    <div class="graphql-data" v-if="items.length > 0">
+      <div v-for="item in items" :key="item.nid">
         <div class="item">
           <div class="title">
             <h2>{{ item.title }}</h2>
@@ -35,6 +35,7 @@
             </div>
             <div class="body" v-if="item.body">
               <p>{{ item.body.value }}</p>
+              <button @click="revealBody(item)" class="reveal-button">Read more</button>
             </div>
             <div class="category" v-if="item.category">
               <p>
@@ -50,7 +51,7 @@
             </div>
             <div class="pdf" v-if="item.file">
               <a :href="item.file.entity.url">
-                <font-awesome-icon size="3x" class="pdf-icon" icon="file-pdf"/>
+                <font-awesome-icon size="2x" class="pdf-icon" icon="file-pdf"/>
               </a>
             </div>
           </div>
@@ -65,6 +66,23 @@
         <div></div>
       </div>
     </div>
+
+    <div v-if="selectedItem" class="modal-mask">
+      <div class="container">
+        <div class="detail-wrap">
+          <font-awesome-icon @click="close" size="2x" class="icon" icon="arrow-left"/>
+          <div class="detail-title">
+            <h2>{{ selectedItem.title }}</h2>
+          </div>
+          <div class="detail-body-wrap">
+            <div class="detail-body">{{ selectedItem.body.value }}</div>
+          </div>
+          <div class="detail-button">
+            <Button class="close-button" @click="close">Close</Button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,7 +92,9 @@ import { ITEMS_QUERY } from "@/services/graphql/Graphql";
 export default {
   name: "ItemsList",
   data() {
-    return {};
+    return {
+      selectedItem: null
+    };
   },
   apollo: {
     nodeQuery: {
@@ -86,6 +106,24 @@ export default {
     // Used to get created items during this user session. These items can be added above fetched item list.
     createdItems() {
       return this.$store.getters.createdItems;
+    },
+    items() {
+      const itemArray = [];
+      // Check if data from Drupal back-end is present.
+      if (this.nodeQuery) {
+        this.nodeQuery.entities.forEach(element => {
+          itemArray.push(element);
+        });
+      }
+      return itemArray;
+    }
+  },
+  methods: {
+    revealBody(item) {
+      this.selectedItem = item;
+    },
+    close() {
+      this.selectedItem = null;
     }
   }
 };
@@ -116,7 +154,7 @@ export default {
   transition: all 0.1s ease;
 
   &.pdf-icon:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
   }
 }
 
@@ -146,7 +184,7 @@ export default {
 }
 
 .body {
-  height: 300px;
+  height: 200px;
   overflow: hidden;
   position: relative;
   grid-row-start: 1;
@@ -156,6 +194,7 @@ export default {
 
   > p {
     margin-top: 0;
+    font-size: 1.1em;
   }
 }
 
@@ -166,13 +205,68 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  background: linear-gradient(transparent 150px, white);
+  background: linear-gradient(transparent 50px, $color-white);
+}
+
+.detail-wrap {
+  background-color: $color-white;
+  padding: 20px;
+  margin: 0 50px 0 50px;
+  max-height: 80vh;
+  overflow: scroll;
+
+  > .icon {
+    color: $color-error;
+    position: absolute;
+    margin: 0 0 0 -5px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.detail-body-wrap {
+  padding: 25px;
+  text-align: left;
+}
+
+.detail-title {
+  font-size: 1.2em;
+  color: $color-accent;
+
+  > h2 {
+    margin-bottom: 0;
+  }
+}
+
+.detail-body {
+  font-size: 1.3em;
+  color: $color-font-light;
+}
+
+.detail-button {
+  margin-bottom: 20px;
+}
+
+.reveal-button {
+  position: absolute;
+  top: 160px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 1em;
+  border: 2px solid $color-font-light;
+  padding: 5px;
+  background-color: transparent;
+  color: $color-font-light;
+  cursor: pointer;
 }
 
 .image {
   > img {
     object-fit: cover;
-    height: 300px;
+    height: 200px;
     width: 100%;
     vertical-align: bottom;
   }

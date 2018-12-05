@@ -15,7 +15,7 @@
           <div v-else class="signed-in">
             <a @click="logOut">Log out</a>
             <div class="user">
-              <font-awesome-icon size="1x" icon="user"/>
+              <font-awesome-icon size="1x" class="user-icon" icon="user"/>
               {{ user }}
             </div>
           </div>
@@ -60,10 +60,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Quicksand");
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 #app {
-  font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  font-family: "Nunito", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -78,19 +78,19 @@ body {
 #nav {
   @include nav-shadow;
 
-  background-color: $color-secondary;
+  background-color: $color-white;
   display: grid;
   grid-template-columns: 1fr 1fr;
   font-weight: bold;
   font-size: 1.2em;
-  color: $color-white;
-  padding: 10px 25px 10px 25px;
+  color: $color-font-light;
+  padding: 10px 0 10px 0;
   margin-bottom: 20px;
 
   a {
     cursor: pointer;
     text-decoration: none;
-    color: $color-white;
+    color: $color-font-light;
 
     &.router-link-exact-active {
       color: $color-accent;
@@ -153,6 +153,10 @@ body {
 
   &:hover {
     cursor: default;
+  }
+
+  > .user-icon {
+    color: $color-accent;
   }
 }
 </style>
