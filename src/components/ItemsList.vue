@@ -67,24 +67,26 @@
       </div>
     </div>
 
-    <div v-if="selectedItem" class="modal-mask">
-      <div class="container">
-        <div class="detail-wrap">
-          <font-awesome-icon @click="close" size="2x" class="icon" icon="arrow-left"/>
-          <div class="detail-title">
-            <h2>{{ selectedItem.title }}</h2>
-          </div>
-          <div class="detail-body-wrap">
-            <div class="detail-body">
-              <p style="white-space: pre-line">{{ selectedItem.body.value }}</p>
+    <transition name="fade" mode="in-out">
+      <div v-if="selectedItem" class="modal-mask">
+        <div class="container">
+          <div class="detail-wrap">
+            <font-awesome-icon @click="close" size="2x" class="icon" icon="arrow-left"/>
+            <div class="detail-title">
+              <h2>{{ selectedItem.title }}</h2>
             </div>
-          </div>
-          <div class="detail-button">
-            <Button class="close-button" @click="close">Close</Button>
+            <div class="detail-body-wrap">
+              <div class="detail-body">
+                <p style="white-space: pre-line">{{ selectedItem.body.value }}</p>
+              </div>
+            </div>
+            <div class="detail-button">
+              <Button class="close-button" @click="close">Close</Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -114,7 +116,6 @@ export default {
       // Check if data from Drupal back-end is present.
       if (this.nodeQuery) {
         this.nodeQuery.entities.forEach(element => {
-          // element.body.value = element.body.value.replace(/(?:\r\n|\r|\n)/g, <br/>);
           itemArray.push(element);
         });
       }
@@ -217,12 +218,23 @@ export default {
   margin: 0 50px 0 50px;
   max-height: 80vh;
   overflow: scroll;
+  opacity: 1;
+  transition: all 0.2s ease;
 
   > .icon {
     color: $color-error;
     position: absolute;
-    margin: 0 0 0 -5px;
+    margin: 0;
+    transition: all 0.1s ease;
   }
+
+  > .icon:hover {
+    transform: scale(1.2);
+  }
+}
+
+.detail-wrap:before {
+  opacity: 0;
 }
 
 ::-webkit-scrollbar {
@@ -230,13 +242,13 @@ export default {
 }
 
 .detail-body-wrap {
-  padding: 25px;
+  padding: 25px 40px 25px 40px;
   text-align: left;
 }
 
 .detail-title {
   font-size: 1.2em;
-  color: $color-accent;
+  color: $color-primary;
 
   > h2 {
     margin-bottom: 0;

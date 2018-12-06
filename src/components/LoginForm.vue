@@ -36,108 +36,106 @@
 </template>
 
 <script>
-import AuthService from '@/services/api/Auth'
+import AuthService from "@/services/api/Auth";
 
 export default {
   name: "LoginForm",
   data() {
     return {
-        userData: {
-            username: '',
-            password: ''
-        },
-        hasError: false
+      userData: {
+        username: "",
+        password: ""
+      },
+      hasError: false
     };
   },
   methods: {
-      submit() {
-          AuthService.passwordGrant(this.userData.username, this.userData.password)
-          .then(data => {
-              if (data !== false) {
-                  this.hasError = false;
-                  this.$store.commit('closeModal');
-              } else {
-                  this.hasError = true;
-              }
-          })
-          .catch(err => {
-              console.log(err);
-          })
-      },
-      close() {
-          this.$store.commit('closeModal');
-      },
-      register() {
-          this.$store.commit('setRegisterModal');
-      }
+    submit() {
+      AuthService.passwordGrant(this.userData.username, this.userData.password)
+        .then(data => {
+          if (data !== false) {
+            this.hasError = false;
+            this.$store.commit("closeModal");
+          } else {
+            this.hasError = true;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    close() {
+      this.$store.commit("closeModal");
+    },
+    register() {
+      this.$store.commit("setRegisterModal");
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
 .form-wrap {
-    background-color: $color-white;
-    padding: 25px;
-    width: fit-content;
-    margin: auto;
+  background-color: $color-white;
+  padding: 25px;
+  width: fit-content;
+  margin: auto;
 }
 
 .form-step {
-    margin: 20px 0 40px 0;
+  margin: 20px 0 40px 0;
 }
 
 .form-step-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 input {
-    font-size: 1.3em;
-    padding: 10px;
-    min-width: 350px;
+  font-size: 1.3em;
+  padding: 10px;
+  min-width: 350px;
 }
 
 .button {
-    font-size: 1.3em;
-    border: 0;
-    padding: 10px 20px 10px 20px;
-    background-color: $color-primary;
-    color: $color-white;
-    cursor: pointer;
+  font-size: 1.3em;
+  border: 0;
+  padding: 10px 20px 10px 20px;
+  background-color: $color-primary;
+  color: $color-white;
+  cursor: pointer;
 }
 
 .close-button {
-    font-size: 1.3em;
-    border: 0;
-    padding: 10px 20px 10px 20px;
-    background-color: $color-error;
-    color: $color-white;
-    cursor: pointer;
+  font-size: 1.3em;
+  border: 0;
+  padding: 10px 20px 10px 20px;
+  background-color: $color-error;
+  color: $color-white;
+  cursor: pointer;
 }
 
 .register-link {
-    font-size: 0.8em;
-    text-decoration: underline;
-    cursor: pointer;
-    color: $color-link;
+  font-size: 0.8em;
+  text-decoration: underline;
+  cursor: pointer;
+  color: $color-link;
 }
 
 .error {
-    border: 2px solid $color-error;
-    transition: all 0.2s ease;
+  border: 2px solid $color-error;
+  transition: all 0.2s ease;
 }
 
 .no-error {
-    border: 2px solid $color-font-light;
+  border: 2px solid $color-font-light;
 }
 
 .error-message {
-    text-align: left;
-    color: $color-error;
-    margin-bottom: 5px;
+  text-align: left;
+  color: $color-error;
+  margin-bottom: 5px;
 }
-
 </style>

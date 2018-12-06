@@ -4,7 +4,7 @@
       <div id="nav">
         <div class="left-group">
           <router-link :to="{ name: 'home' }">
-            <font-awesome-icon size="1x" icon="home"/> decoupled-vue.com
+            <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
           </router-link>
         </div>
         <div class="right-group">
@@ -23,13 +23,17 @@
       </div>
     </header>
     <div class="content container">
-      <router-view/>
-      <div v-if="modalState" class="modal-mask">
-        <div class="wrap">
-          <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
-          <authentication/>
+      <transition name="fade" mode="out-in">
+        <router-view/>
+      </transition>
+      <transition name="fade">
+        <div v-if="modalState" class="modal-mask">
+          <div class="wrap">
+            <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
+            <authentication/>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -60,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 #app {
   font-family: "Nunito", Helvetica, Arial, sans-serif;
@@ -103,6 +107,16 @@ a {
   }
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .left-group {
   display: flex;
   padding-left: 50px;
@@ -127,7 +141,6 @@ a {
 
 .modal-mask {
   position: fixed;
-  z-index: 9998;
   top: 0;
   left: 0;
   width: 100%;
