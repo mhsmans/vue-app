@@ -288,14 +288,14 @@ export default {
 }
 
 .owner {
-  color: $color-primary;
+  color: $color-font-light;
   font-style: italic;
-  font-size: 1em;
   font-weight: 700;
   margin-top: 10px;
 
   > p {
     margin: 0;
+    font-size: 1.1em;
   }
 }
 
@@ -310,11 +310,11 @@ export default {
 
 .category {
   > p {
-    color: $color-primary;
+    color: $color-font-light;
     margin: 0;
     font-style: italic;
-    font-size: 1.2em;
     font-weight: 700;
+    font-size: 1.1em;
   }
 }
 

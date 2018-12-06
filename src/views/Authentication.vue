@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 
-// Animations
+// Animations 
 .slide-left-enter {
   transform: translateX(-350px);
   opacity: 0;
@@ -59,6 +59,7 @@ export default {
   opacity: 0;
 }
 
+// Inverted animations
 .slide-right-enter {
   transform: translateX(350px);
   opacity: 0;
