@@ -35,6 +35,16 @@
         </div>
       </transition>
     </div>
+    <div class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <p>This is footer text.</p>
+          <router-link :to="{ name: 'home' }">
+            <font-awesome-icon size="1x" icon="home" class="footer-icon"/>
+          </router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -92,14 +102,14 @@ a {
   grid-template-columns: 1fr 1fr;
   font-weight: bold;
   font-size: 1.2em;
-  color: $color-font-light;
+  color: $color-font-extra-light;
   padding: 10px 0 10px 0;
   margin-bottom: 20px;
 
   a {
     cursor: pointer;
     text-decoration: none;
-    color: $color-font-light;
+    color: $color-font-extra-light;
 
     &.router-link-exact-active {
       color: $color-accent;
@@ -176,5 +186,26 @@ a {
   > .user-icon {
     color: $color-accent;
   }
+}
+
+.footer {
+  width: 100%;
+  height: 100px;
+  background-color: $color-dark-gray;
+  color: $color-white;
+
+  > .container {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    text-align: center;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+}
+
+.footer-icon {
+  color: $color-white;
 }
 </style>

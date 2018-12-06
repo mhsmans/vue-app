@@ -2,7 +2,7 @@
   <div>
     <div class="item-form-wrap">
       <h2>Create a new item.</h2>
-      <form id="itemForm">
+      <form id="itemForm" @keydown.enter="create">
         <div class="form-step">
           <label for="title" class="label">Item title:</label>
           <hr>

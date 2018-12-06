@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrap">
-    <form id="login">
+    <form id="login" @keydown.enter="submit" @keydown.esc="close">
       <div class="error-message" v-show="hasError">
         <p>Invalid username and password combination.</p>
       </div>

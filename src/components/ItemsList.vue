@@ -166,6 +166,7 @@ export default {
   display: grid;
   grid-template-rows: auto;
   background-color: $color-white;
+  border-top: 5px solid $color-primary;
   padding: 20px;
   @include shadow;
 

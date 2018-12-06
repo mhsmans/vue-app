@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 // Specify amount of content fetched from drupal in 'limit'. 
 export const ITEMS_QUERY = gql`
   query {
-    nodeQuery(limit: 30, sort: [{field: "created" direction: DESC}]) {
+    nodeQuery(limit: 5, sort: [{field: "created" direction: DESC}]) {
       entities {
         ... on NodeTest {
           title
