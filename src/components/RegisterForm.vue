@@ -1,5 +1,5 @@
 <template>
-  <div class="form-wrap">
+  <div class="form-wrap" @keydown.enter="submit" @keydown.esc="close">
     <div class="valid-registration" v-if="validRegistration">
       <h2>Successfully registered!</h2>
       <p>You can now use your credentials to log in.</p>

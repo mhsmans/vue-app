@@ -9,8 +9,7 @@ export default new Vuex.Store({
     'access-token': '',
     'refresh-token': '',
     modalState: false,
-    loginModal: true,
-    createdItems: []
+    loginModal: true
   },
   getters: {
     accessToken(state) {
@@ -27,9 +26,6 @@ export default new Vuex.Store({
     },
     loginModal(state) {
       return state.loginModal;
-    },
-    createdItems(state) {
-      return state.createdItems;
     }
   },
   mutations: {
@@ -61,10 +57,6 @@ export default new Vuex.Store({
     },
     setLoginModal(state) {
       state.loginModal = true;
-    },
-    /******************ITEMS***************/
-    storeCreatedItem(state, item) {
-      state.createdItems.push(item);
     }
   },
   actions: {
@@ -79,9 +71,6 @@ export default new Vuex.Store({
     },
     userLogOut(context) {
       context.commit('userLogOut');
-    },
-    storeCreatedItem(context, item) {
-      context.commit('storeCreatedItem', item);
     }
   }
 })

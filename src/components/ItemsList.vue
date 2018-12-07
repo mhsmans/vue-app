@@ -1,64 +1,7 @@
 <template>
   <div>
-    <!-- Display items that are created during this session -->
-    <!-- <div class="user-created-data" v-if="createdItems.length > 0">
-      <div v-for="item in createdItems" :key="item.nid[0].value">
-        <div class="item">
-          <div class="title">
-            <h3>{{ item.title[0].value }}</h3>
-          </div>
-          <div class="wrap">
-            <div class="body" v-if="item.body">
-              <p>{{ item.body[0].value }}</p>
-    </div>-->
-    <!-- This image is invisible before page refresh. This is caused by the image url.. -->
-    <!-- <div class="image" v-if="item.img">
-              <img :src="item.img[0].url" alt>
-            </div>
-          </div>
-          <div class="category" v-if="item.category">
-            <div v-for="category in item.category" :key="category.name">{{ category.entity.name }}</div>
-          </div>
-        </div>
-      </div>
-    </div>-->
-    <!-- Displaying items fetched from drupal site -->
-    <div class="graphql-data" v-if="items.length > 0">
-      <div v-for="item in items" :key="item.nid">
-        <div class="item">
-          <div class="title">
-            <h2>{{ item.title }}</h2>
-          </div>
-          <div class="wrap">
-            <div class="image" v-if="item.img">
-              <img :src="item.img.url" alt>
-            </div>
-            <div class="body" v-if="item.body">
-              <p style="white-space: pre-line">{{ item.body.value }}</p>
-              <button @click="revealBody(item)" class="reveal-button">Read more</button>
-            </div>
-            <div class="category" v-if="item.category">
-              <p>
-                <span style="font-style: normal">Category -</span>
-                {{ item.category.entity.name }}
-              </p>
-            </div>
-            <div class="owner">
-              <p>
-                <span style="font-style: normal">Owner -</span>
-                {{ item.entityOwner.name }}
-              </p>
-            </div>
-            <div class="pdf" v-if="item.file">
-              <a :href="item.file.entity.url">
-                <font-awesome-icon size="2x" class="pdf-icon" icon="file-pdf"/>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else>
+    <!-- When query is loading -->
+    <div v-if="$apollo.loading">
       <div class="lds-ring">
         <div></div>
         <div></div>
@@ -67,6 +10,51 @@
       </div>
     </div>
 
+    <!-- When there is no content available -->
+    <div v-if="items.length === 0">
+      <h2>No content available.</h2>
+    </div>
+
+    <!-- Item list -->
+    <transition name="fade">
+      <div class="graphql-data" v-if="items.length > 0">
+        <div v-for="item in items" :key="item.nid">
+          <div class="item">
+            <div class="title">
+              <h2>{{ item.title }}</h2>
+            </div>
+            <div class="wrap">
+              <div class="image" v-if="item.img">
+                <img :src="item.img.url" alt>
+              </div>
+              <div class="body" v-if="item.body">
+                <p style="white-space: pre-line">{{ item.body.value }}</p>
+                <button @click="revealBody(item)" class="reveal-button">Read more</button>
+              </div>
+              <div class="category" v-if="item.category">
+                <p>
+                  <span style="font-style: normal">Category -</span>
+                  {{ item.category.entity.name }}
+                </p>
+              </div>
+              <div class="owner">
+                <p>
+                  <span style="font-style: normal">Owner -</span>
+                  {{ item.entityOwner.name }}
+                </p>
+              </div>
+              <div class="pdf" v-if="item.file">
+                <a :href="item.file.entity.url">
+                  <font-awesome-icon size="2x" class="pdf-icon" icon="file-pdf"/>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <!-- Item detail view -->
     <transition name="fade" mode="in-out">
       <div v-if="selectedItem" class="modal-mask">
         <div class="container">
@@ -103,14 +91,11 @@ export default {
   apollo: {
     nodeQuery: {
       query: ITEMS_QUERY,
-      prefetch: true
+      // Interval for updating data from back-end. Can be near real-time.
+      pollInterval: 60000
     }
   },
   computed: {
-    // Used to get created items during this user session. These items can be added above fetched item list.
-    createdItems() {
-      return this.$store.getters.createdItems;
-    },
     items() {
       const itemArray = [];
       // Check if data from Drupal back-end is present.
@@ -166,6 +151,7 @@ export default {
   display: grid;
   grid-template-rows: auto;
   background-color: $color-white;
+  border-top: 5px solid $color-primary;
   padding: 20px;
   @include shadow;
 
