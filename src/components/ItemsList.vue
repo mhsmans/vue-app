@@ -92,7 +92,7 @@ export default {
     nodeQuery: {
       query: ITEMS_QUERY,
       // Interval for updating data from back-end. Can be near real-time.
-      pollInterval: 60000
+      pollInterval: 30000
     }
   },
   computed: {
@@ -120,6 +120,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 .graphql-data {
   display: grid;
   grid-template-rows: auto;
@@ -198,12 +199,14 @@ export default {
   background: linear-gradient(transparent 50px, $color-white);
 }
 
+
 .detail-wrap {
   background-color: $color-white;
   padding: 20px;
   margin: 0 50px 0 50px;
   max-height: 80vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   opacity: 1;
   transition: all 0.2s ease;
 
@@ -221,10 +224,6 @@ export default {
 
 .detail-wrap:before {
   opacity: 0;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 .detail-body-wrap {
@@ -253,15 +252,13 @@ export default {
 .reveal-button {
   position: absolute;
   top: 160px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  font-size: 1em;
+  left: 50%;
   border: 2px solid $color-font-light;
   padding: 5px;
   background-color: transparent;
   color: $color-font-light;
   cursor: pointer;
+  transform: translateX(-50%);
 }
 
 .image {
