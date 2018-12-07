@@ -10,11 +10,6 @@
       </div>
     </div>
 
-    <!-- When there is no content available -->
-    <div v-if="items.length === 0">
-      <h2>No content available.</h2>
-    </div>
-
     <!-- Item list -->
     <transition name="fade">
       <div class="graphql-data" v-if="items.length > 0">
@@ -51,6 +46,11 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- When there is no content available -->
+      <div v-else-if="items.length === 0 && $apollo.loading === false">
+        <h2>No content available.</h2>
       </div>
     </transition>
 
@@ -120,7 +120,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 .graphql-data {
   display: grid;
   grid-template-rows: auto;
@@ -198,7 +197,6 @@ export default {
   top: 0;
   background: linear-gradient(transparent 50px, $color-white);
 }
-
 
 .detail-wrap {
   background-color: $color-white;
