@@ -398,12 +398,13 @@ input[type="file"] {
   color: $color-font-light;
   display: inline-block;
   cursor: pointer;
+  min-width: 150px;
   font-size: 1.1em;
   font-weight: 700;
   height: fit-content;
 }
 
-.form-image{
+.form-image {
   font-size: 1em;
   padding: 5px;
 }
@@ -419,9 +420,10 @@ input[type="file"] {
   border: 2px solid $color-font-light;
   background-color: $color-white;
   font-size: 1.1em;
-  font-weight: 500;
+  font-weight: 600;
   color: $color-font-light;
   padding: 5px;
+  min-width: 150px;
   height: fit-content;
 }
 
