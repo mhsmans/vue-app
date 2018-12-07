@@ -87,6 +87,22 @@ export default {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $color-off-white;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color-accent;
+}
+
 #app {
   font-family: "Nunito", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -400,6 +400,7 @@ input[type="file"] {
   cursor: pointer;
   font-size: 1.1em;
   font-weight: 700;
+  height: fit-content;
 }
 
 .form-image{
@@ -421,6 +422,7 @@ input[type="file"] {
   font-weight: 500;
   color: $color-font-light;
   padding: 5px;
+  height: fit-content;
 }
 
 select {
