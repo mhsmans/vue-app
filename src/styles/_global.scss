@@ -1,4 +1,4 @@
-@import 'mixins';
+@import "mixins";
 
 $color-primary: #326ada;
 $color-secondary: #433e90;
@@ -22,10 +22,18 @@ $screen-md-min: 992px;
 $screen-lg-min: 1200px;
 
 .container {
-    padding: 20px 15px 20px 15px;
-    margin-right: auto;
-    margin-left: auto;
-    background-color: none;
-  
-    max-width: 800px;
-  }
+  padding: 20px 15px 20px 15px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: none;
+
+  max-width: 800px;
+}
+
+.main-container {
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of your footer */
+}

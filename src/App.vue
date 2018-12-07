@@ -1,47 +1,49 @@
 <template>
-  <div id="app">
-    <header class="header">
-      <div id="nav">
-        <div class="left-group">
-          <router-link :to="{ name: 'home' }">
-            <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
-          </router-link>
-        </div>
-        <div class="right-group">
-          <router-link :to="{ name: 'createItem' }">Create item</router-link>
-          <div v-if="user === ''">
-            <a @click.prevent="openModal">Log in</a>
+  <div class="main-container">
+    <div id="app">
+      <header class="header">
+        <div id="nav">
+          <div class="left-group">
+            <router-link :to="{ name: 'home' }">
+              <font-awesome-icon size="1x" icon="home"/>decoupled-vue.com
+            </router-link>
           </div>
-          <div v-else class="signed-in">
-            <a @click="logOut">Log out</a>
-            <div class="user">
-              <font-awesome-icon size="1x" class="user-icon" icon="user"/>
-              {{ user }}
+          <div class="right-group">
+            <router-link :to="{ name: 'createItem' }">Create item</router-link>
+            <div v-if="user === ''">
+              <a @click.prevent="openModal">Log in</a>
+            </div>
+            <div v-else class="signed-in">
+              <a @click="logOut">Log out</a>
+              <div class="user">
+                <font-awesome-icon size="1x" class="user-icon" icon="user"/>
+                {{ user }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
-    <div class="content container">
-      <transition name="fade" mode="out-in">
-        <router-view/>
-      </transition>
-      <transition name="fade">
-        <div v-if="modalState" class="modal-mask">
-          <div class="wrap">
-            <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
-            <authentication/>
+      </header>
+      <div class="content container">
+        <transition name="fade" mode="out-in">
+          <router-view/>
+        </transition>
+        <transition name="fade">
+          <div v-if="modalState" class="modal-mask">
+            <div class="wrap">
+              <font-awesome-icon size="3x" @click="closeModal" class="icon" icon="times"/>
+              <authentication/>
+            </div>
           </div>
-        </div>
-      </transition>
-    </div>
-    <div class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <p>This is footer text.</p>
-          <router-link :to="{ name: 'home' }">
-            <font-awesome-icon size="1x" icon="home" class="footer-icon"/>
-          </router-link>
+        </transition>
+      </div>
+      <div class="footer">
+        <div class="container">
+          <div class="footer-content">
+            <p>This is footer text.</p>
+            <router-link :to="{ name: 'home' }">
+              <font-awesome-icon size="1x" icon="home" class="footer-icon"/>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -76,6 +78,15 @@ export default {
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Nunito");
 
+* {
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 #app {
   font-family: "Nunito", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -84,9 +95,16 @@ export default {
   color: $color-font;
 }
 
+html {
+  height: 100%;
+  position: relative;
+}
+
 body {
   margin: 0;
   background-color: $color-off-white;
+  height: 100%;
+  position: relative;
 }
 
 // Remove dots when link is clicked.
@@ -191,6 +209,8 @@ a {
 .footer {
   width: 100%;
   height: 100px;
+  position: absolute;
+  bottom: 0;
   background-color: $color-dark-gray;
   color: $color-white;
 

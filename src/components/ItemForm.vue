@@ -219,7 +219,6 @@ export default {
               data => {
                 if (data !== false) {
                   // Success
-                  this.$store.dispatch("storeCreatedItem", data);
                   this.itemCreated = true;
                 } else {
                   // Throw error when failing.
