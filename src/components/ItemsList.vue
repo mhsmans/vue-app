@@ -127,12 +127,15 @@ export default {
 }
 
 .pdf {
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: 2;
-  grid-row-end: 4;
   text-align: right;
   position: relative;
+  grid-row-start: 4;
+  grid-row-end: 5;
+
+  @include sm {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
 }
 
 .pdf-icon {
@@ -166,21 +169,30 @@ export default {
 
 .wrap {
   display: grid;
-  grid-template-columns: 1fr 2fr;
   grid-template-rows: auto;
   column-gap: 20px;
   padding: 20px;
   text-align: left;
+  grid-template-columns: 1fr;
+
+  @include sm {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 
 .body {
   height: 200px;
   overflow: hidden;
   position: relative;
-  grid-row-start: 1;
-  grid-row-end: 4;
-  grid-column-start: 2;
-  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  @include sm {
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
 
   > p {
     margin-top: 0;
@@ -201,12 +213,16 @@ export default {
 .detail-wrap {
   background-color: $color-white;
   padding: 20px;
-  margin: 0 50px 0 50px;
   max-height: 80vh;
   overflow-y: scroll;
   overflow-x: hidden;
   opacity: 1;
   transition: all 0.2s ease;
+  margin: 0;
+
+  @include sm {
+    margin: 0 50px 0 50px;
+  }
 
   > .icon {
     color: $color-error;
@@ -260,12 +276,25 @@ export default {
 }
 
 .image {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  margin-bottom: 10px;
+
   > img {
     object-fit: cover;
-    height: 200px;
+    height: 250px;
     width: 100%;
     vertical-align: bottom;
+
+    @include sm {
+      height: 200px;
+    }
   }
+
+  @include sm {
+    margin-bottom: 0;
+  }
+
 }
 
 .owner {
@@ -273,6 +302,8 @@ export default {
   font-style: italic;
   font-weight: 700;
   margin-top: 10px;
+  grid-row-start: 4;
+  grid-row-end: 5;
 
   > p {
     margin: 0;
@@ -283,10 +314,15 @@ export default {
 .category {
   margin-top: 10px;
   text-align: left;
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+
+  @include sm {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
 }
 
 .category {

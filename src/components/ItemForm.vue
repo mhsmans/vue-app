@@ -323,13 +323,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.item-form-wrap {
-  @include shadow;
-
-  > h2 {
-    color: $color-primary;
-  }
-}
 
 .create-button {
   display: flex;
@@ -384,7 +377,6 @@ hr {
 input {
   font-size: 1.3em;
   padding: 10px;
-  min-width: 350px;
 }
 
 input[type="file"] {
@@ -413,7 +405,11 @@ input[type="file"] {
   resize: none;
   font-size: 1.4em;
   padding: 10px;
-  width: 600px;
+  width: 70vw;
+
+  @include sm {
+    width: 600px;
+  }
 }
 
 .category-select {
@@ -440,15 +436,23 @@ select::-ms-expand {
 }
 
 .item-form-wrap {
+  @include shadow;
   background-color: $color-white;
   padding: 25px;
   width: fit-content;
-  margin: auto;
+  margin: 0;
+  width: 100%;
   text-align: left;
+
+  @include sm {
+    margin: auto;
+    width: unset;
+  }
 
   > h2 {
     text-align: center;
     margin: 0 0 40px 0;
+    color: $color-primary;
   }
 }
 </style>
