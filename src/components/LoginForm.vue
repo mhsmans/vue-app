@@ -96,7 +96,11 @@ export default {
 input {
   font-size: 1.3em;
   padding: 10px;
-  min-width: 350px;
+  width: 70vw;
+
+  @include sm {
+    width: 350px;
+  }
 }
 
 .button {

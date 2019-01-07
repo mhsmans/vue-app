@@ -2,6 +2,27 @@
   <div class="main-container">
     <div id="app">
       <header class="header">
+        <!-- Mobile navigation -->
+        <div class="mobile-nav">
+          <div class="menu-button">
+            <h2>Menu</h2>
+            <div class="mobile-user">
+              <p>{{ user }}</p>
+            </div>
+          </div>
+          <div class="mobile-menu">
+            <router-link :to="{ name: 'home' }">Home</router-link>
+            <router-link :to="{ name: 'createItem' }">Create item</router-link>
+            <div v-if="user === ''">
+              <a @click.prevent="openModal" class="mobile-login">Log in</a>
+            </div>
+            <div v-else>
+              <a @click="logOut" class="mobile-login">Log out</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Browser navigation -->
         <div id="nav">
           <div class="left-group">
             <router-link :to="{ name: 'home' }">
@@ -23,6 +44,8 @@
           </div>
         </div>
       </header>
+
+      <!-- Content -->
       <div class="content container">
         <transition name="fade" mode="out-in">
           <router-view/>
@@ -36,6 +59,8 @@
           </div>
         </transition>
       </div>
+
+      <!-- Footer -->
       <div class="footer">
         <div class="container">
           <div class="footer-content">
@@ -129,25 +154,72 @@ a {
 }
 
 #nav {
-  @include nav-shadow;
+  display: none;
 
+  @include sm {
+    @include nav-shadow;
+
+    background-color: $color-white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: $color-font-extra-light;
+    padding: 10px 0 10px 0;
+    margin-bottom: 20px;
+
+    a {
+      cursor: pointer;
+      text-decoration: none;
+      color: $color-font-extra-light;
+
+      &.router-link-exact-active {
+        color: $color-accent;
+      }
+    }
+  }
+}
+
+.mobile-nav {
+  @include sm {
+    display: none;
+  }
+}
+
+.menu-button {
   background-color: $color-white;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  font-weight: bold;
-  font-size: 1.2em;
-  color: $color-font-extra-light;
-  padding: 10px 0 10px 0;
-  margin-bottom: 20px;
+  padding: 20px;
+  width: 100%;
+  @include nav-shadow;
 
-  a {
+  > h2 {
+    margin: 0;
     cursor: pointer;
-    text-decoration: none;
-    color: $color-font-extra-light;
+  }
 
-    &.router-link-exact-active {
+  .mobile-user {
+    > p {
       color: $color-accent;
+      margin: 0;
     }
+  }
+}
+
+.mobile-menu {
+  display: grid;
+  grid-template-columns: 1fr;
+  text-align: left;
+  font-size: 1.3em;
+  
+  > a {
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  > div {
+    padding: 10px;
   }
 }
 
